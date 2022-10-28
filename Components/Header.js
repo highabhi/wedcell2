@@ -287,47 +287,14 @@ const Header = () => {
                     Photgraphers
                   </span>
                   <div className={`d-links mt-2`}>
-                    <Link href="/venue">
-                      <a className={Styles.dropdown_link}> Resort</a>
+                    <Link href="/Shop">
+                      <a className={Styles.dropdown_link}> Shop</a>
                     </Link>
-                    <Link href="/venue">
-                      <a className={Styles.dropdown_link}> Farm House</a>
-                    </Link>
-                    <Link href="/venue">
-                      <a className={Styles.dropdown_link}> Lawn</a>
-                    </Link>
-                    <a href="#" className={Styles.dropdown_link}>
-                      Destination Wedding
-                    </a>
-                    <a href="#" className={Styles.dropdown_link}>
-                      {" "}
-                      Lawn{" "}
-                    </a>
+                    
                   </div>
                 </div>
-                <div className={Styles.d_links_wrapper}>
-                  <span className="shadowed-text d-block text-black">
-                    Photgraphers
-                  </span>
-                  <div className={`d-links mt-2`}>
-                    <Link href="/venue">
-                      <a className={Styles.dropdown_link}> Resort</a>
-                    </Link>
-                    <Link href="/venue">
-                      <a className={Styles.dropdown_link}> Farm House</a>
-                    </Link>
-                    <Link href="/venue">
-                      <a className={Styles.dropdown_link}> Lawn</a>
-                    </Link>
-                    <a href="#" className={Styles.dropdown_link}>
-                      Destination Wedding
-                    </a>
-                    <a href="#" className={Styles.dropdown_link}>
-                      {" "}
-                      Lawn{" "}
-                    </a>
-                  </div>
-                </div>
+                
+                
               </div>
             </div>
           </div>
