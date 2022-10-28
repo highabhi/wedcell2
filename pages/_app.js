@@ -5,6 +5,8 @@ import Dashboard from './dashboard';
 import { Provider } from 'react-redux';
 import {useState,useEffect} from 'react'
 import {store} from '../redux/store'
+import 'mdb-react-ui-kit/dist/css/mdb.min.css'
+import "@fortawesome/fontawesome-free/css/all.min.css"
 
 function MyApp({ Component, pageProps }) {
 
