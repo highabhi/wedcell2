@@ -1,7 +1,17 @@
-.card {
+.firstrow {
     display: flex;
     max-width: 22rem;
     position: relative;
+    margin-top: 2%;
+    margin-left: 5%;
+}
+
+@media screen and (max-width:500px) {
+    .firstrow {
+        display: flex;
+        max-width: 90%;
+        justify-content: center;
+    }
 }
 
 .text {

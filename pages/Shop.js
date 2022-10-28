@@ -29,7 +29,7 @@ function Shop() {
     return(
         <div>
             
-            <MDBCard className={Styles.card}>
+            <MDBCard className={Styles.firstrow}>
             <MDBRipple rippleColor='light' rippleTag='div' className='bg-image hover-overlay'>
                 <MDBCardImage src='https://mdbootstrap.com/img/new/standard/nature/111.webp' fluid alt='...' />
                 <a>
@@ -45,7 +45,7 @@ function Shop() {
             </MDBCardBody>
             </MDBCard>
 
-            <MDBCard className={Styles.card}>
+            <MDBCard className={Styles.firstrow}>
             <MDBRipple rippleColor='light' rippleTag='div' className='bg-image hover-overlay'>
                 <MDBCardImage src='https://mdbootstrap.com/img/new/standard/nature/111.webp' fluid alt='...' />
                 <a>
