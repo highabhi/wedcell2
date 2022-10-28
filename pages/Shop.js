@@ -18,6 +18,7 @@ import {
 function Shop() {
 
         const property = {
+            imageURL: 'https://image.wedmegood.com/resized-nw/1300X/wp-content/uploads/2019/05/56431137_3.jpg',
             title : 'item name',
             itemDescription: 'Bridal Wear Clothing Name',
             button: 'Shop'
@@ -27,45 +28,104 @@ function Shop() {
 
 
     return(
-        <div>
+        <>
             
-            <MDBCard className={Styles.firstrow}>
-            <MDBRipple rippleColor='light' rippleTag='div' className='bg-image hover-overlay'>
-                <MDBCardImage src='https://mdbootstrap.com/img/new/standard/nature/111.webp' fluid alt='...' />
-                <a>
-                <div className='mask' style={{ backgroundColor: 'rgba(251, 251, 251, 0.15)' }}></div>
-                </a>
-            </MDBRipple>
-            <MDBCardBody>
-                <MDBCardTitle>{property.title}</MDBCardTitle>
-                <MDBCardText>
-                {property.itemDescription}
-                </MDBCardText>
-                <MDBBtn href='#'>{property.button}</MDBBtn>
-            </MDBCardBody>
-            </MDBCard>
+            <div className="card">
+            <div className="card-body">
+                <div className="row g-6">
+                <div className="col-lg-4">
+                    <div className="card">
+                    <img className="card-img-top" src={property.imageURL} srcSet={property.imageURL} alt />
+                    <div className="card-body">
+                        <h5 className="card-title">Image Cap Top</h5>
+                        <p className="card-text">Etiam porta sem malesuada magna mollis euismod. Maecenas sed diam eget risus varius blandit sit amet non magna. Vivamus sagittis lacus augue.</p>
+                    </div>
+                    {/*/.card-body */}
+                    </div>
+                    {/*/.card */}
+                </div>
+                {/* /column */}
+                <div className="col-lg-4">
+                    <div className="card">
+                    <img className="card-img-top" src={property.imageURL} srcSet={property.imageURL} alt />
+                    <div className="card-body">
+                        <h5 className="card-title">Image Cap Top</h5>
+                        <p className="card-text">Etiam porta sem malesuada magna mollis euismod. Maecenas sed diam eget risus varius blandit sit amet non magna. Vivamus sagittis lacus augue.</p>
+                    </div>
+                    {/*/.card-body */}
+                    </div>
+                    {/*/.card */}
+                </div>
+                <div className="col-lg-4">
+                    <div className="card">
+                    <img className="card-img-top" src={property.imageURL} srcSet={property.imageURL} alt />
+                    <div className="card-body">
+                        <h5 className="card-title">Image Cap Top</h5>
+                        <p className="card-text">Etiam porta sem malesuada magna mollis euismod. Maecenas sed diam eget risus varius blandit sit amet non magna. Vivamus sagittis lacus augue.</p>
+                    </div>
+                    {/*/.card-body */}
+                    </div>
+                    {/*/.card */}
+                </div>
 
-            <MDBCard className={Styles.firstrow}>
-            <MDBRipple rippleColor='light' rippleTag='div' className='bg-image hover-overlay'>
-                <MDBCardImage src='https://mdbootstrap.com/img/new/standard/nature/111.webp' fluid alt='...' />
-                <a>
-                <div className='mask' style={{ backgroundColor: 'rgba(251, 251, 251, 0.15)' }}></div>
-                </a>
-            </MDBRipple>
+                
+                {/* /column */}
+                </div>
+                {/* /.row */}
+            </div>
+            </div>
+
+            <div className="card">
+            <div className="card-body">
+                <div className="row g-6">
+                <div className="col-lg-4">
+                    <div className="card">
+                    <img className="card-img-top" src={property.imageURL} srcSet={property.imageURL} alt />
+                    <div className="card-body">
+                        <h5 className="card-title">Image Cap Top</h5>
+                        <p className="card-text">Etiam porta sem malesuada magna mollis euismod. Maecenas sed diam eget risus varius blandit sit amet non magna. Vivamus sagittis lacus augue.</p>
+                    </div>
+                    {/*/.card-body */}
+                    </div>
+                    {/*/.card */}
+                </div>
+                {/* /column */}
+                <div className="col-lg-4">
+                    <div className="card">
+                    <img className="card-img-top" src={property.imageURL} srcSet={property.imageURL} alt />
+                    <div className="card-body">
+                        <h5 className="card-title">Image Cap Top</h5>
+                        <p className="card-text">Etiam porta sem malesuada magna mollis euismod. Maecenas sed diam eget risus varius blandit sit amet non magna. Vivamus sagittis lacus augue.</p>
+                    </div>
+                    {/*/.card-body */}
+                    </div>
+                    {/*/.card */}
+                </div>
+                <div className="col-lg-4">
+                    <div className="card">
+                    <img className="card-img-top" src={property.imageURL} srcSet={property.imageURL} alt />
+                    <div className="card-body">
+                        <h5 className="card-title">Image Cap Top</h5>
+                        <p className="card-text">Etiam porta sem malesuada magna mollis euismod. Maecenas sed diam eget risus varius blandit sit amet non magna. Vivamus sagittis lacus augue.</p>
+                    </div>
+                    {/*/.card-body */}
+                    </div>
+                    {/*/.card */}
+                </div>
+
+                
+                {/* /column */}
+                </div>
+                {/* /.row */}
+            </div>
+            </div>
+
+                                
 
 
-            <MDBCardBody className={Styles.Cards}>
-                <MDBCardTitle>Card title</MDBCardTitle>
-                <MDBCardText>
-                Some quick example text to build on the card title and make up the bulk of the card's content.
-                </MDBCardText>
-                <MDBBtn href='#'>Button</MDBBtn>
-            </MDBCardBody>
-            </MDBCard>
 
 
-
-        </div>
+    </>
     )
 }
 

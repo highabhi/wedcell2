@@ -1,9 +1,10 @@
 .firstrow {
     display: flex;
-    max-width: 22rem;
+    max-width: 25rem;
     position: relative;
     margin-top: 2%;
     margin-left: 5%;
+    
 }
 
 @media screen and (max-width:500px) {
@@ -13,6 +14,26 @@
         justify-content: center;
     }
 }
+
+
+.second {
+    display: flex;
+    max-width: 25rem;
+    position: relative;
+    /* margin-top: -24.5%; */
+    margin-left: 40%;
+
+}
+
+.secondrow {
+    display: flex;
+    max-width: 25rem;
+    position: relative;
+    margin-left: 5%;
+   margin-top: 5%;
+
+}
+
 
 .text {
     font-size: 50rem;
