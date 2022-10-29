@@ -204,8 +204,8 @@ const Header = ({ setHeaderHeight }) => {
                             <a href={"#"} onClick={() => {
                                 localStorage.removeItem("wedcell")
                                 localStorage.removeItem("role")
-                                location.reload(true)
                                 router.push("/")
+                                location.reload(true)
                             }}>
                                 <a className={NavStyles.dropdown_link}> logout</a>
                             </a>

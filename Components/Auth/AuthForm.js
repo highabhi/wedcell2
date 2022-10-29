@@ -83,9 +83,9 @@ const AuthForm = ({ loginPagename }) => {
                 })
                 .then(res => {
                     if (res.data.success) {
-                        localStorage.setItem("wedcell", JSON.stringify(res.data))
-                        router.push('/user-dashboard')
-                        console.log(res.data.data);
+                        // localStorage.setItem("wedcell", JSON.stringify(res.data))
+                        // router.push('/dashboard')
+                        // console.log(res.data.data);
                         alert('Registration success')
                     } else {
                         alert(res.data.message)
@@ -141,12 +141,12 @@ const AuthForm = ({ loginPagename }) => {
                         </label>
                         <input type="text" placeholder='Mobile' className="form-control py-3" value={mobile} onChange={(e) => setMobile(e.target.value)} />
                         {
-                            loginPagename === "vendor" && otpScreen ?
-                                <>
-                                    <input type="text" placeholder='OTP' className="form-control py-3" value={otp} onChange={(e) => setOtp(e.target.value)} />
-                                    <input type="text" placeholder='Name' className="form-control py-3" value={name} onChange={(e) => setName(e.target.value)} />
-                                    <input type="text" placeholder='Password' className="form-control py-3" value={password} onChange={(e) => setPassword(e.target.value)} />
-                                </> : ""
+                            otpScreen &&
+                            <>
+                                <input type="text" placeholder='OTP' className="form-control py-3" value={otp} onChange={(e) => setOtp(e.target.value)} />
+                                <input type="text" placeholder='Name' className="form-control py-3" value={name} onChange={(e) => setName(e.target.value)} />
+                                <input type="text" placeholder='Password' className="form-control py-3" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            </>
                         }
                     </div>
                     <button className="primary-btn" onClick={!otpScreen ? SendOTp : VerifyOTP}>{!otpScreen ? "SignUp" : "Submit"}</button>

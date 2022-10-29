@@ -130,7 +130,7 @@ const Footer = () => {
               <ul className={`${Styles.listnone} px-0`}>
                 <li>Home</li>
                 <li> Contact Us</li>
-                <li>Terms & Conditions</li>
+                <li>Terms &amp; Conditions</li>
                 <Link href={"/privacy-policy"}>
                   <li>Privacy Policy</li>
                 </Link>

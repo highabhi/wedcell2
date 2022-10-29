@@ -16,7 +16,6 @@ const MainDashboard = () => {
     const [data, setData] = useState()
 
     const FetchData = (user, con) => {
-        console.log('FetchData')
 
         axios
             .post(
@@ -28,7 +27,6 @@ const MainDashboard = () => {
             )
             .then(res => {
                 if (res.data.success) {
-                    console.log(res.data);
                     setData(res.data.data)
                 } else {
                     console.log('api call failed')
@@ -42,13 +40,11 @@ const MainDashboard = () => {
         const role = localStorage.getItem("role")
         setUser(JSON.parse(auth))
 
-        const config = {
-            headers: { authorization: JSON.parse(auth).data.token },
-        }
-
-        setConfig(config)
-
         if (auth) {
+            const config = {
+                headers: { authorization: JSON.parse(auth).data.token },
+            }
+            setConfig(config)
             FetchData(JSON.parse(auth), config)
         }
 
@@ -57,7 +53,6 @@ const MainDashboard = () => {
         }
 
     }, [])
-
 
     return (
         <div>
@@ -125,7 +120,15 @@ const MainDashboard = () => {
                         <div className="box-shadow bg-white venues-card py-3 px-4">
                             <div className="venue-card-header d-flex align-items-center justify-content-between">
                                 <h5 className="primary-text fw-bold">Venues/Listing</h5>
-                                <Link href={user ? `/dashboard/${user.data._id}` : "/dashboard"}>
+                                {/* <Link href={user ? `/dashboard/${user.data._id}` : "/dashboard"}>
+                                    <span className='fs-3 cursor-pointer'>
+                                        +
+                                    </span>
+                                </Link> */}
+                                <Link href={{
+                                    pathname: user ? `/dashboard/${user.data._id}` : "/dashboard",
+                                    query: { name: 'add' },
+                                }}>
                                     <span className='fs-3 cursor-pointer'>
                                         +
                                     </span>
@@ -156,11 +159,17 @@ const MainDashboard = () => {
                                 <div key={key} className="list-container mt-4">
                                     <div className="list-item  mb-3">
                                         <div className="list-item-title d-flex align-items-center justify-content-between">
-                                            <span className='fw-semi'>
-                                                {data.type} / {data.name} / {data.category}
-                                            </span>
-
-                                            <Link href={`#`}>
+                                            <Link href={data.type === 'Vendor' ? `${data.type.toLowerCase()}s/${data._id}` : `/venue/${data._id}`}>
+                                                <span className='fw-semi' style={{
+                                                    cursor: "pointer"
+                                                }}>
+                                                    {data.type} / {data.name} / {data.category}
+                                                </span>
+                                            </Link>
+                                            <Link href={{
+                                                pathname: user ? `/dashboard/${user.data._id}` : "/dashboard",
+                                                query: { name: 'edit', id: data.id },
+                                            }}>
                                                 <a className='primary-text '>
                                                     Edit
                                                 </a>
@@ -176,10 +185,11 @@ const MainDashboard = () => {
                         </div>
                     </div>
                     <div className="col-md-6">
-                        <div className="bg-white box-shadow add-video-card py-3 px-4 d-flex alig-items-center">
+                        
+                        {/* <div className="bg-white box-shadow add-video-card py-3 px-4 d-flex alig-items-center">
                             <input type="text" className={`form-control ${Styles.radius_0}`} placeholder='Enter Url Of Video ' />
                             <button className="primary-sm-btn">Add Video</button>
-                        </div>
+                        </div> */}
 
                         <div className="bg-white box-shadow px-4 py-2 payment-container mt-2">
                             <div className="payment-title my-4">

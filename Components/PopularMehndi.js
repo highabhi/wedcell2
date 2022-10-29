@@ -5,9 +5,11 @@ import "react-multi-carousel/lib/styles.css";
 import CustomButton from "../Components/CustomButton";
 import Styles from "../styles/PopularMakeup.module.css";
 import Image from "next/image";
+import { PROXY } from "../config";
+import Link from "next/link";
 
 const PopularMehndi = ({ mehndi }) => {
-  const [mehandi, setMehandi] = useState();
+  const [mehndis, setMehndis] = useState([]);
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -27,9 +29,9 @@ const PopularMehndi = ({ mehndi }) => {
       items: 1,
     },
   };
-  console.log(mehndi);
+
   useEffect(() => {
-    setMehandi(mehndi);
+    setMehndis(mehndi);
   }, [mehndi]);
 
   return (
@@ -53,14 +55,14 @@ const PopularMehndi = ({ mehndi }) => {
           itemClass={Styles.carousel_item}
           containerClass={"py-5"}
         >
-          {mehndi.map((meh) => {
-            return (
+          {mehndis.map((meh, key) => (
+            <Link key={key} href={meh.type === 'Vendor' ? `${meh.type.toLowerCase()}s/${meh._id}` : `/venue/${meh._id}`}>
               <div className={Styles.cr_container}>
                 <div
                   className={`${Styles.cr_img_wrapper} w-100 position-relative`}
                 >
                   <Image
-                    src={`http://wedcell.cloudjiffy.net/${meh.mainImage}`}
+                    src={meh.mainImage ? `${PROXY}/${meh.mainImage}` : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1200px-No_image_3x4.svg.png"}
                     layout="fill"
                     objectFit="cover"
                   />
@@ -71,7 +73,7 @@ const PopularMehndi = ({ mehndi }) => {
                   </div>
                   <div className={`cr-footer d-flex mt-4 ${Styles.br_top}`}>
                     <div className={Styles.cr_info}>
-                      <span className="d-block">{meh.price}</span>
+                      <span className="d-block">₹ {meh.price}</span>
                       <span className="d-block f-bold mt-2 shadowed-text">
                         Starting Price
                       </span>
@@ -97,8 +99,8 @@ const PopularMehndi = ({ mehndi }) => {
                   </div>
                 </div>
               </div>
-            );
-          })}
+            </Link>
+          ))}
         </Carousel>
       </div>
     </div>

@@ -93,32 +93,32 @@
 
 
 
-.insta{
+.insta {
     border: 1px solid #9361fa;
     color: #9361fa;
 }
 
-.linked_in{
-   color: #0077b7;
-   border: 1px solid #0077b7;
+.linked_in {
+    color: #0077b7;
+    border: 1px solid #0077b7;
 }
 
-.pintrest{
+.pintrest {
     color: #c8232c;
     border: 1px solid #c8232c;
 }
 
-.tab{
+.tab {
     padding: 18px 25px;
     cursor: pointer;
 }
 
-.gallery_img_wrapper{
+.gallery_img_wrapper {
     width: 100%;
     min-height: 254px;
 }
 
-.gallery_overlay{
+.gallery_overlay {
     width: 100%;
     height: 100%;
     background-color: hsla(0, 70%, 24%, 0.5);
@@ -128,21 +128,40 @@
     place-items: center;
     color: #fff;
     font-size: 2rem;
-    transition: all 450ms ;
+    transition: all 450ms;
     opacity: 0;
     cursor: pointer;
 }
 
-.gallery_img_wrapper:hover .gallery_overlay{
-    transition: all 450ms ;
+.gallery_img_wrapper:hover .gallery_overlay {
+    transition: all 450ms;
     opacity: 1;
 }
 
-.albums_img_wrapper{
+.my_gal_wrapper {
+    width: 100%;
+    min-height: 400px;
+}
+
+.overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.albums_img_wrapper {
     min-height: 180px;
 }
 
-.album_overlay{
+.album_overlay {
     position: absolute;
     background-color: rgba(0, 0, 0, .4);
     width: 100%;
@@ -150,32 +169,32 @@
     top: 0;
 }
 
-.player_container{
+.player_container {
     min-height: 150px;
     position: relative;
     overflow: hidden;
     width: 100%;
 }
 
-.rating_icon{
+.rating_icon {
     font-size: 2rem;
     color: rgba(0, 0, 0, .25);
-    transition: all  450ms;
+    transition: all 450ms;
 }
 
-.rating_icon:hover{
+.rating_icon:hover {
     cursor: pointer;
     color: #ffa912;
 }
 
-.overall_rating{
+.overall_rating {
     font-size: 4rem;
 }
 
-.overall_rating_icon{
+.overall_rating_icon {
     color: #ffa912;
 }
 
-.rating_service{
+.rating_service {
     min-width: 100px;
 }

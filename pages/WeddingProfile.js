@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import Styles from "../styles/weddingprofile.module.css";
 import Link from "next/link";
-// import Image from "next/image";
+import Image from "next/image";
 import VStyles from "../styles/Vendors.module.css";
+
 import Gallery from "../Components/Gallery";
 import Albums from "../Components/Albums";
 import Videos from "../Components/Videos";
-
-
 
 function WeddingProfile() {
   const property = {
@@ -24,27 +23,22 @@ function WeddingProfile() {
       <div className={Styles.container}>
         <div className="col-sm-4 w-75 rounded ">
           <div className={Styles.Card}>
+
             <img
               className="card-img-top"
               src={property.imageURL}
               srcSet={property.imageURL}
               alt
             />
+
           </div>
         </div>
       </div>
-     
-     <div className="container">
-     bootstrap container
-    </div>
 
+      <div style={{
+        marginTop: "250px"
+      }}>
 
-
-      <div
-        style={{
-          marginTop: "250px",
-        }}
-      >
         <div className="container py-5">
           <div className="row">
             <div className="col-md-12">
@@ -56,9 +50,7 @@ function WeddingProfile() {
                       backgroundColor:
                         activeTab === "gallery" ? "#fff" : "#f8f8f8",
                       color:
-                        activeTab === "gallery"
-                          ? "hsla(0, 70%, 24%, 1)"
-                          : "#000",
+                        activeTab === "gallery" ? "hsla(0, 70%, 24%, 1)" : "#000",
                     }}
                     onClick={() => setActiveTab("gallery")}
                   >
@@ -70,9 +62,7 @@ function WeddingProfile() {
                       backgroundColor:
                         activeTab === "albums" ? "#fff" : "#f8f8f8",
                       color:
-                        activeTab === "albums"
-                          ? "hsla(0, 70%, 24%, 1)"
-                          : "#000",
+                        activeTab === "albums" ? "hsla(0, 70%, 24%, 1)" : "#000",
                     }}
                     onClick={() => setActiveTab("albums")}
                   >
@@ -84,9 +74,7 @@ function WeddingProfile() {
                       backgroundColor:
                         activeTab === "videos" ? "#fff" : "#f8f8f8",
                       color:
-                        activeTab === "videos"
-                          ? "hsla(0, 70%, 24%, 1)"
-                          : "#000",
+                        activeTab === "videos" ? "hsla(0, 70%, 24%, 1)" : "#000",
                     }}
                     onClick={() => setActiveTab("videos")}
                   >
@@ -94,15 +82,16 @@ function WeddingProfile() {
                   </div>
                 </div>
                 <div className="active-comp px-4 mt-4">
-                  {activeTab == "gallery" && <Gallery />}
-                  {activeTab == "albums" && <Albums />}
+                  {activeTab == "gallery" && <Gallery images={[]} />}
+                  {activeTab == "albums" && <Albums albums={[]} />}
 
-                  {activeTab == "videos" && <Videos />}
+                  {activeTab == "videos" && <Videos links={[]} />}
                 </div>
               </div>
             </div>
           </div>
         </div>
+
       </div>
 
       <div className={Styles.profilecontainer}>

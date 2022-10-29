@@ -1,9 +1,10 @@
-.card {
-    cursor: pointer;
+.ShopContainer {
+    height: 1000px;
+    color: green;
+
+
 }
 
-.carousel {
-    position: relative;
-    width: 80%;
-    height: 50%;
+.Box {
+    cursor: pointer;
 }

@@ -5,6 +5,9 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 
 import { PROXY } from '../../config'
+import Image from 'next/image'
+
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const cities = [
   'Mumbai',
@@ -213,35 +216,24 @@ const EditListedItems = () => {
 
   const router = useRouter()
 
+  const [form, setForm] = useState({
+    vidLinks: [""],
+    albums: [{ name: '', value: '' }]
+  })
+
   const [config, setConfig] = useState()
-  const [status, setStatus] = useState('Submit New Item')
+  const [status, setStatus] = useState('Update Item')
 
   const [mainImage, setMainImage] = useState(null)
-  const [galleryImages, setGalleryImages] = useState()
+  const [galleryImages, setGalleryImages] = useState([])
   const [brochure, setBrochure] = useState(null)
   const [albums, setAlbums] = useState([{ name: '', value: '' }])
 
-  const [vidLinks, setVidLinks] = useState([''])
-
-  const [amenities, setAmenities] = useState([{ name: '', min: '', max: '' }])
-  const [plans, setPlans] = useState([{ name: '', value: '' }])
-  const [features, setFeatures] = useState([{ name: '', value: false }])
-  const [allowedVendors, setAllowedVendors] = useState([
-    { name: 'Decor', value: false },
-    { name: 'DJ', value: false },
-    { name: 'Cake', value: false },
-    { name: 'Liquor', value: false },
-    { name: 'Pan Counter', value: false },
-  ])
-
-  const [form, setForm] = useState({
-    name: '',
-    category: '',
-    type: '',
-    address: '',
-    albums: [],
-    Brochure: [],
-  })
+  const [vidLinks, setVidLinks] = useState([])
+  const [amenities, setAmenities] = useState([])
+  const [plans, setPlans] = useState([])
+  const [features, setFeatures] = useState([])
+  const [allowedVendors, setAllowedVendors] = useState([])
 
   const mainImageHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -279,31 +271,15 @@ const EditListedItems = () => {
     }
   };
 
-  const testImage = () => {
-
-    console.log("mainImage", mainImage);
-
-    const mainform = new FormData()
-    mainform.append('image', mainImage)
-    mainform.append('_id', "6352df5eb7c44800163db99d")
-    console.log("mainform", mainform);
-    axios
-      .post(`${PROXY}/item/mainimage`, mainform, config)
-      .then(res => {
-        console.log("mainimage response", res.data)
-      })
-      .catch(err => console.log('E' + err))
-  }
-
   const addHandler = async () => {
 
     if (!form.name.length || !form.type.length || !form.category.length || !form.address.length)
       return alert('Please fill name ,type , city, address')
-    if (mainImage === null) return alert('Please select main image')
+    // if (mainImage === null) return alert('Please select main image')
 
     setStatus("Wait....Uploading info")
     const data = await axios.post(
-      `${PROXY}/item/create`,
+      `${PROXY}/item/update`,
       form,
       config,
     )
@@ -319,15 +295,16 @@ const EditListedItems = () => {
     try {
 
       // ----- mainimage
+      if (mainImage !== null) {
 
-      axios
-        .post(`${PROXY}/item/mainimage`, mainform, config)
-        .then(res => {
-          console.log("mainimage response", res.data)
-          setStatus("Done....Uploading mainimage")
-        })
-        .catch(err => console.log('E' + err))
-
+        axios
+          .post(`${PROXY}/item/mainimage`, mainform, config)
+          .then(res => {
+            console.log("mainimage response", res.data)
+            setStatus("Done....Uploading mainimage")
+          })
+          .catch(err => console.log('E' + err))
+      }
       //------- gallary
       console.log(galleryImages.length);
       if (galleryImages.length) {
@@ -393,22 +370,26 @@ const EditListedItems = () => {
     return
   }
 
-  const test = async () => {
-    for (let item of albums) {
-      if (item.name && item.value) await testupload(item)
-    }
-  }
-
-  const testupload = async (item) => {
-    const data = new FormData()
-    data.append('name', item.name)
-    Object.keys(item.value).forEach(function (key) {
-      data.append(`albums`, item.value[key])
-    });
-    console.log(data);
+  const getdata = () => {
+    axios.post(`${PROXY}/item/getall`,
+      {
+        _id: router.query.id
+      }
+    ).then((res) => {
+      setForm(res.data.data[0])
+      setAmenities(res.data.data[0].amenities)
+      setPlans(res.data.data[0].plans)
+      setFeatures(res.data.data[0].features)
+    }).catch((e) => {
+      console.log("error");
+    })
   }
 
   useEffect(() => {
+
+    // const config = {
+    //   headers: { authorization: JSON.parse(localStorage.getItem("wedcell")).data.token },
+    // }
 
     if (localStorage.getItem("wedcell") !== null) {
       const config = {
@@ -417,25 +398,15 @@ const EditListedItems = () => {
 
       setConfig(config)
 
-      setForm({ ...form, vendorId: JSON.parse(localStorage.getItem("wedcell")).data._id })
+      getdata()
     }
 
   }, [])
 
-  // console.log(form);
-  // console.log(plans);
-  // console.log(amenities);
-  // console.log(features);
-  // console.log(allowedVendors);
-  // console.log(vidLinks);
-
   return (
     <div className='bg-white py-2'>
 
-      <h5 className='text-center'>Add Listing</h5>
-
-      {/* <button onClick={testImage}>Click</button> */}
-      {/* <button onClick={test}>Click</button> */}
+      <h5 className='text-center'>Edit Listing</h5>
 
       <div className={Styles.form_container}>
 
@@ -451,6 +422,13 @@ const EditListedItems = () => {
             </div>
           </div>
 
+          <Image
+            src={mainImage ? URL.createObjectURL(mainImage) : `${PROXY}/${form.mainImage}`}
+            alt="Image"
+            width={100}
+            height={100}
+          />
+
         </div>
 
         <div className="row">
@@ -459,19 +437,9 @@ const EditListedItems = () => {
             <div className={Styles.category_section}>
               <label className={Styles.label}>Listing Type</label>
               <br></br>
-              <select onChange={(e) => {
-                setForm({ ...form, type: e.target.value })
-                setAmenities([{ name: '', min: '', max: '' }])
-                setPlans([{ name: '', value: '' }])
-                setFeatures([{ name: '', value: false }])
-                setAllowedVendors([
-                  { name: 'Decor', value: false },
-                  { name: 'DJ', value: false },
-                  { name: 'Cake', value: false },
-                  { name: 'Liquor', value: false },
-                  { name: 'Pan Counter', value: false },
-                ])
-              }} className={Styles.select_tag}>
+              <select
+                value={form.type}
+                className={Styles.select_tag}>
                 <option value="" disabled selected>--select--</option>
                 <option value="Venue">Venue</option>
                 <option value="Vendor">Vendor</option>
@@ -483,9 +451,11 @@ const EditListedItems = () => {
             <div className={Styles.category_section}>
               <label className={Styles.label}>City</label>
               <br></br>
-              <select onChange={(e) => {
-                setForm({ ...form, city: e.target.value })
-              }} id='city' className={Styles.select_tag}>
+              <select
+                value={form.city}
+                onChange={(e) => {
+                  setForm({ ...form, city: e.target.value })
+                }} id='city' className={Styles.select_tag}>
                 <option value={null} disabled selected>--select--</option>
                 {cities.map((name) => (
                   <option value={name}>{name}</option>
@@ -493,12 +463,6 @@ const EditListedItems = () => {
               </select>
             </div>
           </div>
-
-          {/* <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
-            <label className={Styles.label}>Price</label>
-            <br></br>
-            <input type="number" value="15000" className={Styles.price_tag}></input>
-          </div> */}
 
         </div>
 
@@ -508,18 +472,22 @@ const EditListedItems = () => {
               <label className={Styles.label}>Category</label>
               <br></br>
               {form.type === "Vendor" ?
-                <select onChange={(e) => {
-                  setForm({ ...form, category: e.target.value })
-                }} id='city' className={Styles.select_tag}>
+                <select
+                  value={form.category}
+                  onChange={(e) => {
+                    setForm({ ...form, category: e.target.value })
+                  }} id='city' className={Styles.select_tag}>
                   <option value={null} disabled selected>--select--</option>
                   {CategotiesList.map((list, key) => (
                     <option key={key} value={list.name}>{list.name}</option>
                   ))}
                 </select>
                 :
-                <select onChange={(e) => {
-                  setForm({ ...form, category: e.target.value })
-                }} id='city' className={Styles.select_tag}>
+                <select
+                  value={form.category}
+                  onChange={(e) => {
+                    setForm({ ...form, category: e.target.value })
+                  }} id='city' className={Styles.select_tag}>
                   <option value={null} disabled selected>--select--</option>
                   {CategotiesListVenue.map((list, key) => (
                     <option key={key} value={list.name}>{list.name}</option>
@@ -534,9 +502,11 @@ const EditListedItems = () => {
               <label className={Styles.label}>Sub Category</label>
               <br></br>
               {form.type === "Vendor" ?
-                <select onChange={(e) => {
-                  setForm({ ...form, subCategory: e.target.value })
-                }} className={Styles.select_tag}>
+                <select
+                  value={form.subCategory}
+                  onChange={(e) => {
+                    setForm({ ...form, subCategory: e.target.value })
+                  }} className={Styles.select_tag}>
                   <option value={null} disabled selected>--select--</option>
                   {CategotiesList.map((list) => (
                     form.category === list.name ?
@@ -547,9 +517,11 @@ const EditListedItems = () => {
                   ))}
                 </select>
                 :
-                <select onChange={(e) => {
-                  setForm({ ...form, subCategory: e.target.value })
-                }} className={Styles.select_tag}>
+                <select
+                  value={form.subCategory}
+                  onChange={(e) => {
+                    setForm({ ...form, subCategory: e.target.value })
+                  }} className={Styles.select_tag}>
                   <option value={null} disabled selected>--select--</option>
                   {CategotiesListVenue.map((list) => (
                     form.category === list.name ?
@@ -570,18 +542,22 @@ const EditListedItems = () => {
             <div className={Styles.category_section}>
               <label className={Styles.label}>Name of Listing</label>
               <br></br>
-              <input onChange={(e) => {
-                setForm({ ...form, name: e.target.value })
-              }} type="text" placeholder='Name of Listing' className={Styles.phone_tag}></input>
+              <input
+                value={form.name}
+                onChange={(e) => {
+                  setForm({ ...form, name: e.target.value })
+                }} type="text" placeholder='Name of Listing' className={Styles.phone_tag}></input>
             </div>
           </div>
 
           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
             <label className={Styles.label}>Description / About</label>
             <br></br>
-            <input onChange={(e) => {
-              setForm({ ...form, description: e.target.value })
-            }} type="text" placeholder='Description / About' className={Styles.email_tag}></input>
+            <input
+              value={form.description}
+              onChange={(e) => {
+                setForm({ ...form, description: e.target.value })
+              }} type="text" placeholder='Description / About' className={Styles.email_tag}></input>
           </div>
 
         </div>
@@ -592,18 +568,22 @@ const EditListedItems = () => {
             <div className={Styles.category_section}>
               <label className={Styles.label}>Contact Email</label>
               <br></br>
-              <input onChange={(e) => {
-                setForm({ ...form, contactEmail: e.target.value })
-              }} type="text" placeholder='Contact Email' className={Styles.phone_tag}></input>
+              <input
+                value={form.contactEmail}
+                onChange={(e) => {
+                  setForm({ ...form, contactEmail: e.target.value })
+                }} type="text" placeholder='Contact Email' className={Styles.phone_tag}></input>
             </div>
           </div>
 
           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
             <label className={Styles.label}>Contact Number</label>
             <br></br>
-            <input onChange={(e) => {
-              setForm({ ...form, contactPhone: e.target.value })
-            }} type="text" placeholder='Contact Number' className={Styles.email_tag}></input>
+            <input
+              value={form.contactPhone}
+              onChange={(e) => {
+                setForm({ ...form, contactPhone: e.target.value })
+              }} type="text" placeholder='Contact Number' className={Styles.email_tag}></input>
           </div>
 
         </div>
@@ -614,18 +594,22 @@ const EditListedItems = () => {
             <div className={Styles.category_section}>
               <label className={Styles.label}>Address</label>
               <br></br>
-              <input onChange={(e) => {
-                setForm({ ...form, address: e.target.value })
-              }} type="text" placeholder='Address' className={Styles.phone_tag}></input>
+              <input
+                value={form.address}
+                onChange={(e) => {
+                  setForm({ ...form, address: e.target.value })
+                }} type="text" placeholder='Address' className={Styles.phone_tag}></input>
             </div>
           </div>
 
           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
             <label className={Styles.label}>Zipcode</label>
             <br></br>
-            <input onChange={(e) => {
-              setForm({ ...form, zipcode: e.target.value })
-            }} type="text" placeholder='Zipcode' className={Styles.email_tag}></input>
+            <input
+              value={form.zipcode}
+              onChange={(e) => {
+                setForm({ ...form, zipcode: e.target.value })
+              }} type="text" placeholder='Zipcode' className={Styles.email_tag}></input>
           </div>
 
         </div>
@@ -636,9 +620,11 @@ const EditListedItems = () => {
             <div className={Styles.category_section}>
               <label className={Styles.label}>Amenity Price</label>
               <br></br>
-              <input onChange={(e) => {
-                setForm({ ...form, price: e.target.value })
-              }} type="text" placeholder='Amenity Price' className={Styles.phone_tag}></input>
+              <input
+                value={form.price}
+                onChange={(e) => {
+                  setForm({ ...form, price: e.target.value })
+                }} type="text" placeholder='Amenity Price' className={Styles.phone_tag}></input>
             </div>
           </div>
 
@@ -652,18 +638,22 @@ const EditListedItems = () => {
                 <div className={Styles.category_section}>
                   <label className={Styles.label}>Veg Platter Price (in ₹)</label>
                   <br></br>
-                  <input onChange={(e) => {
-                    setForm({ ...form, vegPerPlate: e.target.value })
-                  }} type="text" placeholder='Veg Platter Price (in ₹)' className={Styles.phone_tag}></input>
+                  <input
+                    value={form.vegPerPlate}
+                    onChange={(e) => {
+                      setForm({ ...form, vegPerPlate: e.target.value })
+                    }} type="text" placeholder='Veg Platter Price (in ₹)' className={Styles.phone_tag}></input>
                 </div>
               </div>
 
               <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                 <label className={Styles.label}>NonVeg Platter Price (in ₹)</label>
                 <br></br>
-                <input onChange={(e) => {
-                  setForm({ ...form, nonVegPerPlate: e.target.value })
-                }} type="text" placeholder='NonVeg Platter Price (in ₹)' className={Styles.email_tag}></input>
+                <input
+                  value={form.nonVegPerPlate}
+                  onChange={(e) => {
+                    setForm({ ...form, nonVegPerPlate: e.target.value })
+                  }} type="text" placeholder='NonVeg Platter Price (in ₹)' className={Styles.email_tag}></input>
               </div>
 
             </div>
@@ -683,32 +673,38 @@ const EditListedItems = () => {
                   <div className="col-md-4">
                     <label className={Styles.label}>Name</label>
                     <br></br>
-                    <input onChange={(e) => {
-                      const newarr = [...amenities]
-                      newarr[key].name = e.target.value
-                      setAmenities(newarr)
-                      setForm({ ...form, amenities: newarr })
-                    }} type="text" placeholder='Name' className={Styles.phone_tag}></input>
+                    <input
+                      value={data.name}
+                      onChange={(e) => {
+                        const newarr = [...amenities]
+                        newarr[key].name = e.target.value
+                        setAmenities(newarr)
+                        setForm({ ...form, amenities: newarr })
+                      }} type="text" placeholder='Name' className={Styles.phone_tag}></input>
                   </div>
                   <div className="col-md-4">
                     <label className={Styles.label}>Minimum Capacity</label>
                     <br></br>
-                    <input onChange={(e) => {
-                      const newarr = [...amenities]
-                      newarr[key].min = e.target.value
-                      setAmenities(newarr)
-                      setForm({ ...form, amenities: newarr })
-                    }} type="text" placeholder='Minimum Capacity' className={Styles.phone_tag}></input>
+                    <input
+                      value={data.min}
+                      onChange={(e) => {
+                        const newarr = [...amenities]
+                        newarr[key].min = e.target.value
+                        setAmenities(newarr)
+                        setForm({ ...form, amenities: newarr })
+                      }} type="text" placeholder='Minimum Capacity' className={Styles.phone_tag}></input>
                   </div>
                   <div className="col-md-4">
                     <label className={Styles.label}>Maximum Capacity</label>
                     <br></br>
-                    <input onChange={(e) => {
-                      const newarr = [...amenities]
-                      newarr[key].max = e.target.value
-                      setAmenities(newarr)
-                      setForm({ ...form, amenities: newarr })
-                    }} type="text" placeholder='Maximum Capacity' className={Styles.phone_tag}></input>
+                    <input
+                      value={data.max}
+                      onChange={(e) => {
+                        const newarr = [...amenities]
+                        newarr[key].max = e.target.value
+                        setAmenities(newarr)
+                        setForm({ ...form, amenities: newarr })
+                      }} type="text" placeholder='Maximum Capacity' className={Styles.phone_tag}></input>
                   </div>
                 </>
               ))}
@@ -726,7 +722,7 @@ const EditListedItems = () => {
                 <br></br>
               </div>
             </div>
-            {allowedVendors.map((data, key) => (
+            {form.allowedVendors.map((data, key) => (
               <div className="row mt-3 mb-3" key={key}>
                 <div className="col-md-4">
                   {/* <label className={Styles.label}>Vendor Name</label>
@@ -737,9 +733,8 @@ const EditListedItems = () => {
                   {/* <label className={Styles.label}>Allowed / Not Allowed</label>
                   <br></br><br /> */}
                   <input type="checkbox" onClick={() => {
-                    const newarr = [...allowedVendors]
+                    const newarr = [...form.allowedVendors]
                     newarr[key].value = !data.value
-                    setAllowedVendors(newarr)
                     setForm({ ...form, allowedVendors: newarr })
                   }} checked={data.value} ></input>
                 </div>
@@ -760,12 +755,14 @@ const EditListedItems = () => {
                 <div className="col-md-4">
                   <label className={Styles.label}>Name</label>
                   <br></br>
-                  <input onChange={(e) => {
-                    const newarr = [...features]
-                    newarr[key].name = e.target.value
-                    setFeatures(newarr)
-                    setForm({ ...form, features: newarr })
-                  }} type="text" placeholder='Name' className={Styles.phone_tag}></input>
+                  <input
+                    value={data.name}
+                    onChange={(e) => {
+                      const newarr = [...features]
+                      newarr[key].name = e.target.value
+                      setFeatures(newarr)
+                      setForm({ ...form, features: newarr })
+                    }} type="text" placeholder='Name' className={Styles.phone_tag}></input>
                 </div>
                 <div className="col-md-4">
                   <label className={Styles.label}>Allowed / Not Allowed</label>
@@ -797,22 +794,26 @@ const EditListedItems = () => {
               <div className="col-md-4">
                 <label className={Styles.label}>Plan Name</label>
                 <br></br>
-                <input onChange={(e) => {
-                  const newarr = [...plans]
-                  newarr[key].name = e.target.value
-                  setPlans(newarr)
-                  setForm({ ...form, plans: newarr })
-                }} type="text" placeholder='Plan Name' className={Styles.phone_tag}></input>
+                <input
+                  value={data.name}
+                  onChange={(e) => {
+                    const newarr = [...plans]
+                    newarr[key].name = e.target.value
+                    setPlans(newarr)
+                    setForm({ ...form, plans: newarr })
+                  }} type="text" placeholder='Plan Name' className={Styles.phone_tag}></input>
               </div>
               <div className="col-md-4">
                 <label className={Styles.label}>Value</label>
                 <br></br>
-                <input onChange={(e) => {
-                  const newarr = [...plans]
-                  newarr[key].value = e.target.value
-                  setPlans(newarr)
-                  setForm({ ...form, plans: newarr })
-                }} type="text" placeholder='Value' className={Styles.phone_tag}></input>
+                <input
+                  value={data.value}
+                  onChange={(e) => {
+                    const newarr = [...plans]
+                    newarr[key].value = e.target.value
+                    setPlans(newarr)
+                    setForm({ ...form, plans: newarr })
+                  }} type="text" placeholder='Value' className={Styles.phone_tag}></input>
               </div>
             </div>
           ))}
@@ -825,31 +826,15 @@ const EditListedItems = () => {
             <div className={Styles.category_section}>
               <label className={Styles.label}>Terms and Conditions</label>
               <br></br>
-              <textarea onChange={(e) => {
-                setForm({ ...form, termsandconditions: e.target.value })
-              }} type="text" placeholder='Terms and Conditions' className={Styles.phone_tag}></textarea>
+              <textarea
+                value={form.termsandconditions}
+                onChange={(e) => {
+                  setForm({ ...form, termsandconditions: e.target.value })
+                }} type="text" placeholder='Terms and Conditions' className={Styles.phone_tag}></textarea>
             </div>
           </div>
 
         </div>
-
-        {/* <div className="row mt-3 mb-3">
-          <div className="col-md-4">
-            <label className={Styles.label}>Background Image</label>
-            <br></br>
-            <input type="file" id="myfile" name="myfile" />
-          </div>
-          <div className="col-md-4">
-            <label className={Styles.label}>Menu File</label>
-            <br></br>
-            <input type="file" id="myfile" name="myfile" />
-          </div>
-          <div className="col-md-4">
-            <label className={Styles.label}>Add Galery</label>
-            <br></br>
-            <input type="file" id="myfile" name="myfile" />
-          </div>
-        </div> */}
 
         <div className="row">
 
@@ -861,6 +846,15 @@ const EditListedItems = () => {
                 <input onChange={galleryHandler} type="file" id="myfile" name="myfile" multiple />
               </label>
             </div>
+            {form.images &&
+              <label style={{
+                color: 'green'
+              }}>You have already uploaded <span style={{
+                color: 'red',
+                fontSize: 16,
+              }}>{form.images.length}</span> images, you can update your gallary by uploading the new images.
+              </label>
+            }
           </div>
 
           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
@@ -871,6 +865,15 @@ const EditListedItems = () => {
                 <input onChange={brochureHandler} type="file" />
               </label>
             </div>
+            {form.brochure &&
+              <label style={{
+                color: 'green'
+              }}>You have already uploaded <span style={{
+                color: 'red',
+                fontSize: 16,
+              }}>{form.brochure.length}</span> brochure's, you can update your brochure's by uploading the new brochure's.
+              </label>
+            }
           </div>
 
         </div>
@@ -882,19 +885,61 @@ const EditListedItems = () => {
               <label className={Styles.label}>Albums</label>
               &nbsp;&nbsp;&nbsp;&nbsp;
               <span onClick={() => {
-                const newitem = { name: '', value: '' }
+                const newitem = [...form.albums, { name: '', value: '' }]
+                setForm({ ...form, albums: newitem })
                 setAlbums(old => [...old, newitem]);
               }} className='fs-5 cursor-pointer'>
                 +
               </span>
               <br></br>
 
-              {albums.map((album, key) => (
-                <label key={key} className={Styles.label}>
-                  <input type="text" onChange={onChangeAlbumHandler(key)} placeholder='Album name' className={Styles.phone_tag}></input>
-                  <input onChange={albumHandler(key)} type="file" id="myfile" name="myfile" multiple />
-                </label>
+              {form.albums.map((album, key) => (
+                <>
+                  <label key={key} className={Styles.label}>
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'baseline'
+                    }}>
+                      <input disabled value={album.name} type="text" placeholder='Album Name' className={Styles.phone_tag}></input>
+                      <div onClick={() => {
+                        form.albums.splice(key, 1)
+                        setForm({ ...form, albums: form.albums })
+                      }} style={{
+                        marginLeft: "10px",
+                        fontSize: "20px",
+                        color: 'red',
+                        cursor: 'pointer'
+                      }}><RiDeleteBin6Line /></div>
+                    </div>
+                    {/* <input type="file" id="myfile" name="myfile" multiple /> */}
+                  </label>
+                  {album.images &&
+                    <label className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style={{
+                      color: 'green',
+                      marginBottom: '15px'
+                    }}>You have already uploaded <span style={{
+                      color: 'red',
+                      fontSize: 16,
+                    }}>{form.images.length}</span> images's, Please delete and re-upload an album to update.
+                    </label>
+                  }
+                </>
               ))}
+
+              <div className="row">
+
+                <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                  {albums.map((album, key) => (
+                    <label key={key} className={Styles.label}>
+                      <input type="text" onChange={onChangeAlbumHandler(key)} placeholder='Album name' className={Styles.phone_tag}></input>
+                      <input onChange={albumHandler(key)} type="file" id="myfile" name="myfile" multiple />
+                    </label>
+                  ))}
+
+                </div>
+
+              </div>
 
             </div>
           </div>
@@ -908,67 +953,44 @@ const EditListedItems = () => {
               <label className={Styles.label}>Video Links
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <span onClick={() => {
-                  const newitem = ''
-                  setVidLinks(old => [...old, newitem]);
+                  const newitem = [...form.vidLinks, ''];
+                  setForm({ ...form, vidLinks: newitem })
+
                 }} className='fs-5 cursor-pointer'>
                   +
                 </span>
               </label>
               <br></br>
-              {vidLinks.map((data, key) => (
-                <input onChange={(e) => {
-                  const newitem = [...vidLinks]
-                  newitem[key] = e.target.value
-                  setVidLinks(newitem);
-                  setForm({ ...form, vidLinks: newitem })
-                }} type="text" placeholder='https://youtu.be/dOKQeqGNJwY' className={Styles.phone_tag}></input>
+              {form.vidLinks.map((data, key) => (
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'baseline'
+                }}>
+                  <input
+                    value={data}
+                    onChange={(e) => {
+                      const newitem = [...form.vidLinks]
+                      newitem[key] = e.target.value
+                      setForm({ ...form, vidLinks: newitem })
+                    }} type="text"
+                    placeholder='https://youtu.be/dOKQeqGNJwY'
+                    className={Styles.phone_tag}></input>
+                  <div onClick={() => {
+                    form.vidLinks.splice(key, 1)
+                    setForm({ ...form, vidLinks: form.vidLinks })
+                  }} style={{
+                    marginLeft: "10px",
+                    fontSize: "20px",
+                    color: 'red',
+                    cursor: 'pointer'
+                  }}><RiDeleteBin6Line /></div>
+                </div>
               ))}
             </div>
           </div>
 
         </div>
-
-        {/* <div className="row">
-
-          <h4>Venues</h4>
-
-          <label className={Styles.label}>Vendors</label>
-
-          <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
-            <div className={Styles.category_section}>
-              <select className={Styles.select_tag}>
-                <option value="A">Photographers</option>
-                <option value="B">Bridal Makeup</option>
-                <option value="C">Groom Makeup</option>
-                <option value="D">Family Makeup</option>
-              </select>
-            </div>
-          </div>
-
-          <label className={Styles.label} >Amenities</label>
-
-          <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
-            <div className={Styles.category_section}>
-              <select className={Styles.select_tag}>
-                <option value="A">Free Wifi</option>
-                <option value="B">Travel Assistance</option>
-              </select>
-            </div>
-          </div>
-
-          <label className={Styles.label}>Tag</label>
-
-          <div className="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
-            <div className={Styles.category_section}>
-              <select className={Styles.select_tag}>
-                <option value="A">Hot Sell</option>
-                <option value="B">Low Price</option>
-                <option value="D">Family Makeup</option>
-              </select>
-            </div>
-          </div>
-
-        </div> */}
 
         <div className="d-block mt-3">
           <button onClick={addHandler} className={` primary-btn`}>

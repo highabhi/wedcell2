@@ -14,7 +14,8 @@ import PopularPhotographer from "../Components/PopularPhotographer";
 import WeddingBlogs from "../Components/WddingBlogs";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Getallitems, Gethotels } from "../redux/actions/HomeActions";
+import { GetMehndis, GetHotels, GetMakeups, GetDecors, GetPhotographers } from "../redux/actions/HomeActions";
+
 
 export default function Home({ Hotel }) {
   const dispatch = useDispatch();
@@ -24,11 +25,20 @@ export default function Home({ Hotel }) {
   }, []);
 
   useEffect(() => {
-    dispatch(Getallitems());
-    dispatch(Gethotels());
+    dispatch(GetMehndis());
+    dispatch(GetHotels());
+    dispatch(GetMakeups());
+    dispatch(GetPhotographers());
+    dispatch(GetDecors());
   }, []);
-  const { mehndi, hotel } = useSelector((state) => state.homeReducer);
- console.log(mehndi);
+
+  const { mehndi, hotel, makeup, photographer, decor, } = useSelector((state) => state.homeReducer);
+
+  console.log("mehndi", mehndi);
+  // console.log("hotel", hotel);
+  // console.log("makeup", makeup);
+  // console.log("photographer", photographer);
+  // console.log("decor", decor);
 
   return (
     <>
@@ -39,15 +49,15 @@ export default function Home({ Hotel }) {
       <Hero />
       <SafetyStandards />
       <Services />
-      <PopularMakeup />
+      <PopularMakeup makeup={makeup} />
       <Venues />
       <PopularMehndi mehndi={mehndi} />
       <InHouseService />
       <PopularHotel hotel={hotel} />
       <WeddingIdeas />
-      <PopularDecor />
+      <PopularDecor decor={decor} />
       <RealWeddings />
-      <PopularPhotographer />
+      <PopularPhotographer photographer={photographer} />
       <WeddingBlogs />
     </>
   );

@@ -2,6 +2,11 @@ let initialState = {
   errors: {},
   mehndi: [],
   hotel: [],
+  makeup: [],
+  photographer: [],
+  decor: [],
+  vendor: {},
+  venue: {},
 };
 
 const homeReducer = (state = initialState, action) => {
@@ -43,6 +48,98 @@ const homeReducer = (state = initialState, action) => {
         ...state,
         errors: action.payload,
       };
+
+    case "MAKEUP":
+      return {
+        ...state,
+        loading: true,
+        errors: {},
+      };
+
+    case "FETCH_MAKEUP":
+      return {
+        ...state,
+        makeup: action.payload.data,
+      };
+    case "MAKEUP_REJECTED":
+      return {
+        ...state,
+        errors: action.payload,
+      };
+
+    case "PHOTOGRAPHER":
+      return {
+        ...state,
+        loading: true,
+        errors: {},
+      };
+
+    case "FETCH_PHOTOGRAPHER":
+      return {
+        ...state,
+        photographer: action.payload.data,
+      };
+    case "PHOTOGRAPHER_REJECTED":
+      return {
+        ...state,
+        errors: action.payload,
+      };
+
+    case "DECOR":
+      return {
+        ...state,
+        loading: true,
+        errors: {},
+      };
+
+    case "FETCH_DECOR":
+      return {
+        ...state,
+        decor: action.payload.data,
+      };
+    case "DECOR_REJECTED":
+      return {
+        ...state,
+        errors: action.payload,
+      };
+
+    case "VENDOR":
+      return {
+        ...state,
+        loading: true,
+        errors: {},
+      };
+
+    case "FETCH_VENDOR":
+      return {
+        ...state,
+        vendor: action.payload.data,
+      };
+    case "VENDOR_REJECTED":
+      return {
+        ...state,
+        errors: action.payload,
+      };
+
+    case "VENUE":
+      return {
+        ...state,
+        loading: true,
+        errors: {},
+      };
+
+    case "FETCH_VENUE":
+      return {
+        ...state,
+        venue: action.payload.data,
+      };
+    case "VENUE_REJECTED":
+      return {
+        ...state,
+        errors: action.payload,
+      };
+
+
     case "ASSOCIATION":
       return {
         ...state,

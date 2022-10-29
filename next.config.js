@@ -1,14 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  swcMinify: false,
+  
   images: {
-    loader: "akamai",
-    path: ".",
     domains: [
       "www.wedcell.com",
       "wedcell.com",
       "images.pexels.com",
       "wedcell.cloudjiffy.net",
+      "wedcell.herokuapp.com",
+      "www.vhv.rs",
+      "vhv.rs",
+      "pngset.com",
+      "upload.wikimedia.org",
+      "www.upload.wikimedia.org",
+      "localhost"
     ],
   },
   eslint: {
@@ -18,4 +25,6 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = nextConfig; 
+
+

@@ -6,6 +6,8 @@ import Styles from "../styles/PopularMakeup.module.css";
 import Image from "next/image";
 import { Gethotels } from "../redux/actions/HomeActions";
 import { useDispatch, useSelector } from "react-redux";
+import { PROXY } from "../config";
+import Link from "next/link";
 
 const PopularHotel = ({ hotel }) => {
   const dispatch = useDispatch();
@@ -29,10 +31,10 @@ const PopularHotel = ({ hotel }) => {
       items: 1,
     },
   };
+
   useEffect(() => {
     setHotels(hotel);
   }, [hotel]);
-  console.log(hotels);
 
   return (
     <div className={`py-60 bg-grey`}>
@@ -57,41 +59,42 @@ const PopularHotel = ({ hotel }) => {
           containerClass={"py-5"}
         >
           {
-            hotels.map((hot) => {
-              
-          return <div className={Styles.cr_container}>
-            <div className={`${Styles.cr_img_wrapper} w-100 position-relative`}>
-              <Image
-                src={`/${hot?.mainImage}`}
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
-            <div className="cr-body">
-              <div className="cr-info px-2 py-2 ">
-                <h4>{hot?.name}</h4>
-              </div>
-              <div className={`cr-footer p-3  ${Styles.br_top}`}>
-                <div className="price d-flex align-items-center  justify-content-between">
-                  <span className="d-block f-bold">Room Price</span>
-                  <span className="d-block">{hot?.price}</span>
-                </div>
+            hotels.map((hot, key) => (
+              <Link key={key} href={hot.type === 'Vendor' ? `${hot.type.toLowerCase()}s/${hot._id}` : `/venue/${hot._id}`}>
+                <div className={Styles.cr_container}>
+                  <div className={`${Styles.cr_img_wrapper} w-100 position-relative`}>
+                    <Image
+                      src={
+                        hot.mainImage ? `${PROXY}/${hot.mainImage}` : "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/No_image_3x4.svg/1200px-No_image_3x4.svg.png"
+                      }
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  </div>
+                  <div className="cr-body">
+                    <div className="cr-info px-2 py-2 ">
+                      <h4>{hot?.name}</h4>
+                    </div>
+                    <div className={`cr-footer p-3  ${Styles.br_top}`}>
+                      <div className="price d-flex align-items-center  justify-content-between">
+                        <span className="d-block f-bold">Room Price</span>
+                        <span className="d-block">₹ {hot?.price}</span>
+                      </div>
 
-                <div className="hotel-food-info d-flex align-items-center  justify-content-between text-gray">
-                  <span>Veg Per Plate</span>
-                  <span>{hot?.vegPerPlate}</span>
+                      <div className="hotel-food-info d-flex align-items-center  justify-content-between text-gray">
+                        <span>Veg Per Plate</span>
+                        <span>{hot?.vegPerPlate}</span>
+                      </div>
+                      <div className="hotel-food-info d-flex align-items-center justify-content-between text-gray">
+                        <span>Non-Veg Per Plate</span>
+                        <span>{hot?.nonVegPerPlate}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="hotel-food-info d-flex align-items-center justify-content-between text-gray">
-                  <span>Non-Veg Per Plate</span>
-                  <span>{hot?.nonVegPerPlate}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          })}
-        
-         
-       
+              </Link>
+            ))}
+
         </Carousel>
       </div>
     </div>

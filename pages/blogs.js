@@ -10,7 +10,7 @@ const Blogs = () => {
     <div className="blogs-container">
       <div className={Styles.blog_hero_continer}>
         <h1 className={` ${Styles.hero_title} text-white fw-bold`}>
-          Blog Lists
+          Blog List
         </h1>
       </div>
       <div className="blogs-list-container bg-grey py-60">
