@@ -1,46 +1,9 @@
-.firstrow {
-    display: flex;
-    max-width: 25rem;
+.card {
+    cursor: pointer;
+}
+
+.carousel {
     position: relative;
-    margin-top: 2%;
-    margin-left: 5%;
-    
-}
-
-@media screen and (max-width:500px) {
-    .firstrow {
-        display: flex;
-        max-width: 90%;
-        justify-content: center;
-    }
-}
-
-
-.second {
-    display: flex;
-    max-width: 25rem;
-    position: relative;
-    /* margin-top: -24.5%; */
-    margin-left: 40%;
-
-}
-
-.secondrow {
-    display: flex;
-    max-width: 25rem;
-    position: relative;
-    margin-left: 5%;
-   margin-top: 5%;
-
-}
-
-
-.text {
-    font-size: 50rem;
-}
-
-.Cards {
-    margin-top: 20%;
-    margin-left: 10%;
-    position: relative;
+    width: 80%;
+    height: 50%;
 }

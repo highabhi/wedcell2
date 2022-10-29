@@ -5,6 +5,7 @@ import CustomButton from '../Components/CustomButton'
 import Styles from '../styles/PopularMakeup.module.css'
 import Image from 'next/image';
 import {MdLocationPin} from 'react-icons/md'
+import Link from 'next/link';
 
 const RealWeddings = () => {
     const responsive = {
@@ -51,7 +52,7 @@ const RealWeddings = () => {
                         containerClass={'py-5'}
                     >
 
-
+                        <Link href={"/WeddingProfile"}>
                         <div className={`${Styles.cr_container} box-shadow`} >
                             <div className={`${Styles.cr_img_wrapper} w-100 position-relative`}>
                                 <Image
@@ -78,7 +79,9 @@ const RealWeddings = () => {
                             </div>
                         </div>
 
-                        <div className={`${Styles.cr_container} box-shadow`} >
+                        </Link>
+
+                        {/* <div className={`${Styles.cr_container} box-shadow`} >
                             <div className={`${Styles.cr_img_wrapper} w-100 position-relative`}>
                                 <Image
                                     src={'https://www.wedcell.com/assetss/images/blogs/6193d25f35f41.jpg'}
@@ -127,7 +130,7 @@ const RealWeddings = () => {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
 
 
