@@ -9,7 +9,7 @@ const Dashboard = () => {
   const [headerHeight, setHeaderHeight] = useState(0)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
 
-  const router = useRouter()
+  const router = useRouter() 
 
   const [data, setData] = useState()
 

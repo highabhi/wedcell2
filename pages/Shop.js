@@ -23,9 +23,9 @@ function Shop() {
         <>
             
             <div className="card">
-            <div className="card-body">
+             <div className="card-body">
                 <div className="row g-6" >
-                   <Link href={"/ItemDetails"}>
+                    <Link href={"/ItemDetails"}>
                     
                     <div className="col-lg-4">
                     <div className="card">
@@ -37,7 +37,7 @@ function Shop() {
                     </div>
                   
                 </div>
-                </div>
+            </div>
                 </Link>
                
                 <div className="col-lg-4">
