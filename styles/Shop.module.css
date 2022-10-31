@@ -1,10 +1,9 @@
-.ShopContainer {
-    height: 1000px;
-    color: green;
+.Cards {
+    /* cursor: pointer; */
 
 
 }
 
-.Box {
-    cursor: pointer;
+.FilterContainer {
+    height: 400px;
 }

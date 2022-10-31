@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import Styles from "../../styles/Editlist.module.css"
 import axios from 'axios'
-
 import { useRouter } from 'next/router'
-
 import { PROXY } from '../../config'
 import Image from 'next/image'
-
 import { RiDeleteBin6Line } from "react-icons/ri";
+
 
 const cities = [
   'Mumbai',
@@ -225,6 +223,7 @@ const EditListedItems = () => {
   const [status, setStatus] = useState('Update Item')
 
   const [mainImage, setMainImage] = useState(null)
+  const [menu, setMenu] = useState(null)
   const [galleryImages, setGalleryImages] = useState([])
   const [brochure, setBrochure] = useState(null)
   const [albums, setAlbums] = useState([{ name: '', value: '' }])
@@ -241,6 +240,13 @@ const EditListedItems = () => {
       setMainImage(i)
     }
   };
+
+  const menuHandler = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const i = event.target.files[0];
+      setMenu(i)
+    }
+  }
 
   const galleryHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -290,8 +296,7 @@ const EditListedItems = () => {
     setStatus("Wait....Uploading mainimage")
     const mainform = new FormData()
     mainform.append('image', mainImage)
-    mainform.append('_id', itemdata._id)
-    console.log("mainform", mainform);
+    mainform.append('_id', itemdata._id)    
     try {
 
       // ----- mainimage
@@ -305,8 +310,23 @@ const EditListedItems = () => {
           })
           .catch(err => console.log('E' + err))
       }
+
+      //------ menu
+      const menudata = new FormData()
+      if (menu) {
+        setStatus("Wait....Uploading Menu")
+        menudata.append(`menu`, menu)
+        menudata.append('_id', itemdata._id)
+        axios
+          .post(`${PROXY}/item/uploadmenu`, menudata, config)
+          .then(res => {
+            console.log("menu response", res.data)
+            setStatus("Done....Uploading Menu")
+          })
+          .catch(err => console.log('E' + err))
+      }
+
       //------- gallary
-      console.log(galleryImages.length);
       if (galleryImages.length) {
         setStatus("Wait....Uploading gallery")
         const gallery = new FormData()
@@ -654,6 +674,29 @@ const EditListedItems = () => {
                   onChange={(e) => {
                     setForm({ ...form, nonVegPerPlate: e.target.value })
                   }} type="text" placeholder='NonVeg Platter Price (in ₹)' className={Styles.email_tag}></input>
+              </div>
+
+            </div>
+
+            <div className="row">
+
+              <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div className={Styles.name_block}>
+                  <label className={Styles.label}>Menu</label>
+                  <br></br>
+                  <label className={Styles.label}>
+                    <input onChange={menuHandler} type="file" id="myfile" name="myfile" />
+                  </label>
+                </div>
+                {form.menu &&
+                  <label style={{
+                    color: 'green'
+                  }}>You have already uploaded <span style={{
+                    color: 'red',
+                    fontSize: 16,
+                  }}>{form.brochure.length}</span> menu's, you can update your menu's by uploading the new menu's.
+                  </label>
+                }
               </div>
 
             </div>

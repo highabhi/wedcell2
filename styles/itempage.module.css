@@ -1,27 +1,129 @@
-.carousel {
-    display: flex;
-    justify-content: center;
-    /* align-items: center; */
+.Container {
+  height: 1000px;
+}
+
+.DetailsContainer {
+  /* display: flex;
+  position: relative;
+  justify-content: center; */
+}
+
+@media screen  and (max-width:524px) {
+   .DetailsContainer {
+    display: grid;
     position: relative;
-    max-width: 90%;
-    max-height: 400px;
-    overflow: hidden;
-    object-fit: contain;
-    /* font-family: 'object-fit: contain;'; */
+    align-items: center;
+    row-gap: 0.5rem;
+    margin-top: 8%;
+    height: 400px;
+    width: 65%;
+    border-radius: 12px;
+    box-shadow: 2px 2px 9px gray; 
+   }
+  
 }
 
-.swiper {
-    .Swiper-slide {
-        padding-top: 20%;
-        overflow:hidden;
-   
-        .img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            
 
-        }
+
+.Detailed {
+    
+    height: 1200px;
+    
+}
+
+
+
+@media screen and (max-width: 500px) {
+  .Detailed {
+  
+  }
+}
+
+.SwipeC {
+    width: 55%;
+    margin-left: 1%;
+    
+}
+
+@media screen and (max-width:524px) {
+    .SwipeC {
+      width: 100%;
+
     }
+  
 }
+
+
+.Swiper {
+  margin-top: 1%;
+  display: flex;
+  height: 400px;
+  justify-content: center;
+  position: relative;
+  height: 480px;
+  margin-left: 0.5%;
+}
+
+.SwiperContainer {
+  height: 600px;
+  background-color: lavender;
+  /* height: 100%; */
+  max-width: 100%;
+  justify-content: center;
+  position: relative;
+  align-items: center;
+  margin-top: 2%;
+}
+
+.DetailsI {
+    background-color: rgb(227, 223, 223);
+   
+    width: 42%;
+    margin-left: 57% ;
+    margin-top: -32.5%;
+    border-radius: 12px;
+    padding-left: 2.5%;
+    padding-top: 2%;
+    font-size: 2rem; 
+    font-style: italic;
+
+}
+
+@media screen and (max-width:524px) {
+  .DetailsI {
+    width: 100%;
+    margin: 0;
+    margin-top: 5%;
+  }
+  
+}
+
+.divider {
+    margin-top: 50%;
+    margin-left: -2%;
+    width:100%;
+}
+
+.id {
+  font-size: 1rem;
+  padding-left: 5%;
+
+}
+
+.input {
+  width: 50%;
+  margin-top: 40%;
+}
+
+.title {
+  margin-top: 2rem;
+  font-size: 2rem;
+}
+.products {
+  font-size: 43;
+  font-weight: 800;
+
+   
+}
+
+

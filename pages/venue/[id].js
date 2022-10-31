@@ -16,7 +16,8 @@ import axios from 'axios'
 import { PROXY } from '../../config'
 
 import { BsFillTelephoneFill } from "react-icons/bs";
-import { CgMail } from "react-icons/cg"
+import { CgMail } from "react-icons/cg";
+import { BsHeartFill } from "react-icons/bs";
 import Table from 'react-bootstrap/Table';
 
 const VenueDetails = () => {
@@ -29,11 +30,12 @@ const VenueDetails = () => {
 
     const [show, setShow] = useState(false)
 
+    const [config, setConfig] = useState()
+
     const router = useRouter()
     const { id } = router.query
 
-    useEffect(() => {
-
+    const getData = () => {
         axios.post(
             `${PROXY}/item/getAll`,
             {
@@ -45,10 +47,44 @@ const VenueDetails = () => {
         }).catch((e) => {
             console.log(e);
         })
+    }
+
+    const updateWishList = () => {
+
+        if (venue.wishlist.includes(id)) {
+            venue.wishlist.pop(id)
+        } else {
+            venue.wishlist.push(id)
+        }
+
+        axios.post(
+            `${PROXY}/item/update`,
+            venue,
+            config
+        ).then((res) => {
+            if (res.data.success) {
+                getData()
+            } else {
+                alert("Please login first")
+                router.push("/vendor-login")
+            }
+        }).catch((e) => console.log(e))
+    }
+
+    useEffect(() => {
+
+        getData()
+
+        if (localStorage.getItem("wedcell") !== null) {
+            const config = {
+                headers: { authorization: JSON.parse(localStorage.getItem("wedcell")).data.token },
+            }
+            setConfig(config)
+        }
 
     }, [id])
 
-    console.log(venue);
+    // console.log(venue);
 
     return (
 
@@ -65,9 +101,18 @@ const VenueDetails = () => {
                                 objectFit='cover'
                             />
                         </div>
+                        <h1
+                            onClick={updateWishList}
+                            style={{
+                                color: (venue.wishlist && venue.wishlist.includes(id)) ? 'yellow' : 'white',
+                                position: 'absolute',
+                                right: 30,
+                                top: 30,
+                                cursor: 'pointer',
+                                zIndex: 2,
+                            }}><BsHeartFill /></h1>
                         <div className={`${Styles.vendor_details} d-flex flex-column justify-content-end`}>
                             <div className="address-name-info d-flex align-items-center justify-content-between flex-wrap">
-
                                 <div className="title-address">
 
                                     <h2>{venue.name}</h2>
@@ -88,10 +133,13 @@ const VenueDetails = () => {
                                             color: "#681212"
                                         }}>Download Brochure</span>
                                     </a>
-                                    <button className="primary-btn fw-bold">
+                                    {/* <button className="primary-btn fw-bold">
                                         <span className='me-2'>+</span>
                                         Add To Wishlist
-                                    </button>
+                                    </button> */}
+                                    <a href={venue.menu ? `${PROXY}/${venue.menu[0]}` : "#"} className="primary-btn fw-bold" download>
+                                        <span>View Menu</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>

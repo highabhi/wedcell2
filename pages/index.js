@@ -48,7 +48,7 @@ export default function Home({ Hotel }) {
       </Head>
       <Hero />
       <SafetyStandards />
-      <Services />
+      {/* <Services /> */}
       <PopularMakeup makeup={makeup} />
       <Venues />
       <PopularMehndi mehndi={mehndi} />

@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { useState, useEffect } from 'react'
 import { store } from '../redux/store'
 
-
+//
 function MyApp({ Component, pageProps }) {
 
 

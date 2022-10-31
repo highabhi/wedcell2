@@ -13,6 +13,10 @@ import { useRouter } from 'next/router'
 import { PROXY } from '../../config'
 import axios from 'axios'
 
+import { BsFillTelephoneFill } from "react-icons/bs";
+import { CgMail } from "react-icons/cg";
+import { BsHeartFill } from "react-icons/bs";
+
 const VendorDetails = () => {
 
     const [activeTab, setActiveTab] = useState('gallery')
@@ -21,11 +25,12 @@ const VendorDetails = () => {
 
     const [show, setShow] = useState(false)
 
+    const [config, setConfig] = useState()
+
     const router = useRouter()
     const { id } = router.query
 
-    useEffect(() => {
-
+    const getData = () => {
         axios.post(
             `${PROXY}/item/getAll`,
             {
@@ -37,6 +42,40 @@ const VendorDetails = () => {
         }).catch((e) => {
             console.log(e);
         })
+    }
+
+    const updateWishList = () => {
+
+        if (vendor.wishlist.includes(id)) {
+            vendor.wishlist.pop(id)
+        } else {
+            vendor.wishlist.push(id)
+        }
+
+        axios.post(
+            `${PROXY}/item/update`,
+            vendor,
+            config
+        ).then((res) => {
+            if (res.data.success) {
+                getData()
+            } else {
+                alert("Please login first")
+                router.push("/vendor-login")
+            }
+        }).catch((e) => console.log(e))
+    }
+
+    useEffect(() => {
+
+        getData()
+
+        if (localStorage.getItem("wedcell") !== null) {
+            const config = {
+                headers: { authorization: JSON.parse(localStorage.getItem("wedcell")).data.token },
+            }
+            setConfig(config)
+        }
 
     }, [id])
 
@@ -54,6 +93,16 @@ const VendorDetails = () => {
                                 objectFit='cover'
                             />
                         </div>
+                        <h1
+                            onClick={updateWishList}
+                            style={{
+                                color: (vendor.wishlist && vendor.wishlist.includes(id)) ? 'yellow' : 'white',
+                                position: 'absolute',
+                                right: 30,
+                                top: 30,
+                                cursor: 'pointer',
+                                zIndex: 2,
+                            }}><BsHeartFill /></h1>
                         <div className={`${Styles.vendor_details} d-flex flex-column justify-content-end`}>
                             <div className="address-name-info d-flex align-items-center justify-content-between flex-wrap">
 
@@ -77,10 +126,10 @@ const VendorDetails = () => {
                                             color: "#681212"
                                         }}>Download Brochure</span>
                                     </a>
-                                    <button className="primary-btn fw-bold">
+                                    {/* <button className="primary-btn fw-bold">
                                         <span className='me-2'>+</span>
                                         Add To Wishlist
-                                    </button>
+                                    </button> */}
                                 </div>
                             </div>
                         </div>

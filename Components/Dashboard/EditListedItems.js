@@ -217,6 +217,7 @@ const EditListedItems = () => {
   const [status, setStatus] = useState('Submit New Item')
 
   const [mainImage, setMainImage] = useState(null)
+  const [menu, setMenu] = useState(null)
   const [galleryImages, setGalleryImages] = useState()
   const [brochure, setBrochure] = useState(null)
   const [albums, setAlbums] = useState([{ name: '', value: '' }])
@@ -249,6 +250,13 @@ const EditListedItems = () => {
       setMainImage(i)
     }
   };
+
+  const menuHandler = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      const i = event.target.files[0];
+      setMenu(i)
+    }
+  }
 
   const galleryHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -327,6 +335,21 @@ const EditListedItems = () => {
           setStatus("Done....Uploading mainimage")
         })
         .catch(err => console.log('E' + err))
+
+      //------ menu
+      const menudata = new FormData()
+      if (menu) {
+        setStatus("Wait....Uploading Menu")
+        menudata.append(`menu`, menu)
+        menudata.append('_id', itemdata._id)
+        axios
+          .post(`${PROXY}/item/uploadmenu`, menudata, config)
+          .then(res => {
+            console.log("menu response", res.data)
+            setStatus("Done....Uploading Menu")
+          })
+          .catch(err => console.log('E' + err))
+      }
 
       //------- gallary
       console.log(galleryImages.length);
@@ -668,6 +691,20 @@ const EditListedItems = () => {
 
             </div>
 
+            <div className="row">
+
+              <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div className={Styles.name_block}>
+                  <label className={Styles.label}>Menu</label>
+                  <br></br>
+                  <label className={Styles.label}>
+                    <input onChange={menuHandler} type="file" id="myfile" name="myfile" />
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
             <div className="row mt-3 mb-3">
               <label className={Styles.label}>Amenities / Halls
                 &nbsp;&nbsp;&nbsp;&nbsp;
@@ -858,7 +895,7 @@ const EditListedItems = () => {
               <label className={Styles.label}>Gallary</label>
               <br></br>
               <label className={Styles.label}>
-                <input onChange={galleryHandler} type="file" id="myfile" name="myfile" multiple />
+                <input onChange={galleryHandler} accept="image/*" type="file" id="myfile" name="myfile" multiple />
               </label>
             </div>
           </div>
@@ -892,7 +929,7 @@ const EditListedItems = () => {
               {albums.map((album, key) => (
                 <label key={key} className={Styles.label}>
                   <input type="text" onChange={onChangeAlbumHandler(key)} placeholder='Album name' className={Styles.phone_tag}></input>
-                  <input onChange={albumHandler(key)} type="file" id="myfile" name="myfile" multiple />
+                  <input onChange={albumHandler(key)} accept="image/*" type="file" id="myfile" name="myfile" multiple />
                 </label>
               ))}
 
