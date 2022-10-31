@@ -4,7 +4,7 @@ import Styles from '../styles/filter.module.css';
 function Filter() {
     return(
         <div className={Styles.FilterContainer}>
-            <h1>Filter</h1>
+            <h1>Filter hehe</h1>
         </div>
     )
 }
