@@ -5,6 +5,9 @@ import Dashboard from './dashboard';
 import { Provider } from 'react-redux';
 import { useState, useEffect } from 'react'
 import { store } from '../redux/store'
+// import '../styles/colorpicker.css'
+import '../styles/picker.css'
+
 
 //
 function MyApp({ Component, pageProps }) {

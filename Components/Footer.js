@@ -4,6 +4,10 @@ import Image from "next/image";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Link from "next/link";
+import Router from "next/router";
+
+import google from '../public/images/Google-Play.png'
+import apple from '../public/images/Apple-Store.png'
 
 const Footer = () => {
   return (
@@ -128,15 +132,20 @@ const Footer = () => {
             <div className="footer-widget">
               <h3 className={Styles.widget_title}>Important Links</h3>
               <ul className={`${Styles.listnone} px-0`}>
-                <li>Home</li>
-                <li> Contact Us</li>
+                <li></li>
+                <Link href={"/"}>
+                  <li>Home</li>
+                </Link>
+                {/* <li> Contact Us</li>
                 <li>Terms &amp; Conditions</li>
                 <Link href={"/privacy-policy"}>
                   <li>Privacy Policy</li>
                 </Link>
                 <li>About</li>
-                <li>Blog</li>
-                <li>Institute</li>
+                <li>Blog</li> */}
+                <Link href={"https://wedcellinstitute.com"}>
+                  <li>WedCell Institute</li>
+                </Link>
               </ul>
             </div>
           </div>
@@ -147,30 +156,34 @@ const Footer = () => {
                 <li>Are you vendor ? List your venue and</li>
                 <li>service get more from listing business.</li>
                 <li>
-                  <button className={Styles.footer_button}>
+                  <button
+                    onClick={() => {
+                      Router.push("/vendor-login")
+                    }}
+                    className={Styles.footer_button}>
                     List Your Buisness
                   </button>
                 </li>
-                <li>
-                  {" "}
-                  <Image
-                    src={
-                      "https://wedcell.com/assets/images/get_it_google_footer.png"
-                    }
-                    height={"50"}
-                    width={"160"}
-                  />
-                </li>
-                <li>
-                  {" "}
-                  <Image
-                    src={
-                      "	https://wedcell.com/assets/images/get_it_apple_store_hi.png"
-                    }
-                    height={"50"}
-                    width={"160"}
-                  />
-                </li>
+                <Link href={"https://play.google.com/store/apps/details?id=com.wb.wedcell"}>
+                  <li>
+                    {" "}
+                    <Image
+                      src={google}
+                      height={"50"}
+                      width={"160"}
+                    />
+                  </li>
+                </Link>
+                <Link href={"https://apps.apple.com/in/app/wedcell/id1603782330"}>
+                  <li>
+                    {" "}
+                    <Image
+                      src={apple}
+                      height={"50"}
+                      width={"160"}
+                    />
+                  </li>
+                </Link>
               </ul>
             </div>
           </div>

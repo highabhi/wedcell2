@@ -31,6 +31,7 @@ const VenueDetails = () => {
     const [show, setShow] = useState(false)
 
     const [config, setConfig] = useState()
+    const [vId, setVId] = useState('')
 
     const router = useRouter()
     const { id } = router.query
@@ -51,10 +52,12 @@ const VenueDetails = () => {
 
     const updateWishList = () => {
 
-        if (venue.wishlist.includes(id)) {
-            venue.wishlist.pop(id)
+        if (venue.wishlist.includes(vId)) {
+            venue.wishlist.pop(vId)
         } else {
-            venue.wishlist.push(id)
+            if (vId !== '') {
+                venue.wishlist.push(vId)
+            }
         }
 
         axios.post(
@@ -104,7 +107,7 @@ const VenueDetails = () => {
                         <h1
                             onClick={updateWishList}
                             style={{
-                                color: (venue.wishlist && venue.wishlist.includes(id)) ? 'yellow' : 'white',
+                                color: (venue.wishlist && venue.wishlist.includes(vId)) ? 'yellow' : 'white',
                                 position: 'absolute',
                                 right: 30,
                                 top: 30,

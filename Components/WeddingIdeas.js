@@ -44,7 +44,7 @@ const WeddingIdeas = () => {
                     swipeable={true}
                     draggable={true}
                     arrows={false}
-                    centerMode={true}
+                    // centerMode={true}
                     customButtonGroup={<CustomButton />}
                     itemClass={Styles.carousel_item}
                     containerClass={'py-5'}

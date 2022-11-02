@@ -2,270 +2,282 @@ import React, { useEffect, useState } from 'react'
 import Styles from "../../styles/Editlist.module.css"
 import axios from 'axios'
 
-import { useRouter } from 'next/router'
+import { useS3Upload } from "next-s3-upload";
 
-import { PROXY } from '../../config'
+import { useRouter } from "next/router";
+
+import { PROXY } from "../../config";
 
 const cities = [
-  'Mumbai',
-  'Pune',
-  'Delhi',
-  'Jaipur',
-  'Goa',
-  'Udaipur',
-  'Agra',
-  'Noida',
-  'Gurgaon',
-  'Ranchi',
-  'Patna',
-  'Bangalore',
-  'Hyderabad',
-  'Ahmedabad',
-  'Chennai',
-  'Kolkata',
-  'Surat',
-  'Lucknow',
-  'Kanpur',
-  'Nagpur',
-  'Indore',
-  'Thane',
-  'Bhopal',
-  'Visakhapatnam',
-  'Vadodara',
-  'Ghaziabad',
-  'Ludhiana',
-  'Nashik',
-  'Meerut',
-  'Rajkot',
-  'Varanasi',
-  'Srinagar',
-  'Aurangabad',
-  'Dhanbad',
-  'Amritsar',
-  'Allahabad',
-  'Gwalior',
-  'Jabalpur',
-  'Coimbatore',
-  'Vijayawada',
-  'Jodhpur',
-  'Raipur',
-  'Kota',
-  'Chandigarh',
-  'Guwahati',
-  'Mysore',
-  'Bareilly',
-  'Aligarh',
-  'Moradabad',
-  'Jalandhar',
-  'Bhuba',
-  'Gorakhpur',
-  'Bikaner',
-  'Saharanpur',
-  'Jamshedpur',
-  'Bhilai',
-  'Cuttack',
-  'Firozabad',
-  'Kochi',
-  'Dehradun',
-  'Durgapur',
-  'Ajmer',
-  'Siliguri',
-  'Gaya',
-  'Tirupati',
-  'Mathura',
-  'Bilaspur',
-  'Haridwar',
-  'Gandhinagar',
-  'Shimla',
-  'Gangtok',
-  'Nainital',
-  'Jaisalmer',
-  'Indor',
-  'Rishikesh',
-  'kaushali',
-  'Pushkar',
-  'Kerala',
-  'Jim Corbet',
-  'Mussoorie',
-  'Dubai',
-  'Thailand',
-  'Canada',
-  'Srilanka',
-  'South Africa',
-  'Singapore',
-  'Bali',
-  'Italy',
-  'UK',
-  'Autralia',
-  'Bokaro',
-  'Faridabad',
-  'South Delhi',
-  'Kolkata',
-]
+  "Mumbai",
+  "Pune",
+  "Delhi",
+  "Jaipur",
+  "Goa",
+  "Udaipur",
+  "Agra",
+  "Noida",
+  "Gurgaon",
+  "Ranchi",
+  "Patna",
+  "Bangalore",
+  "Hyderabad",
+  "Ahmedabad",
+  "Chennai",
+  "Kolkata",
+  "Surat",
+  "Lucknow",
+  "Kanpur",
+  "Nagpur",
+  "Indore",
+  "Thane",
+  "Bhopal",
+  "Visakhapatnam",
+  "Vadodara",
+  "Ghaziabad",
+  "Ludhiana",
+  "Nashik",
+  "Meerut",
+  "Rajkot",
+  "Varanasi",
+  "Srinagar",
+  "Aurangabad",
+  "Dhanbad",
+  "Amritsar",
+  "Allahabad",
+  "Gwalior",
+  "Jabalpur",
+  "Coimbatore",
+  "Vijayawada",
+  "Jodhpur",
+  "Raipur",
+  "Kota",
+  "Chandigarh",
+  "Guwahati",
+  "Mysore",
+  "Bareilly",
+  "Aligarh",
+  "Moradabad",
+  "Jalandhar",
+  "Bhuba",
+  "Gorakhpur",
+  "Bikaner",
+  "Saharanpur",
+  "Jamshedpur",
+  "Bhilai",
+  "Cuttack",
+  "Firozabad",
+  "Kochi",
+  "Dehradun",
+  "Durgapur",
+  "Ajmer",
+  "Siliguri",
+  "Gaya",
+  "Tirupati",
+  "Mathura",
+  "Bilaspur",
+  "Haridwar",
+  "Gandhinagar",
+  "Shimla",
+  "Gangtok",
+  "Nainital",
+  "Jaisalmer",
+  "Indor",
+  "Rishikesh",
+  "kaushali",
+  "Pushkar",
+  "Kerala",
+  "Jim Corbet",
+  "Mussoorie",
+  "Dubai",
+  "Thailand",
+  "Canada",
+  "Srilanka",
+  "South Africa",
+  "Singapore",
+  "Bali",
+  "Italy",
+  "UK",
+  "Autralia",
+  "Bokaro",
+  "Faridabad",
+  "South Delhi",
+  "Kolkata",
+];
 
 const CategotiesList = [
   {
-    name: 'Bridal Wear',
+    name: "Bridal Wear",
     subCategories: [],
   },
   {
-    name: 'Groom Wear',
+    name: "Groom Wear",
     subCategories: [],
   },
   {
-    name: 'Food',
+    name: "Food",
     subCategories: [
-      'Chaat Counter',
-      'Fruit Counter',
-      'Catering services',
-      'Pan Counter',
-      'Cake',
-      'Bar Tenders',
+      "Chaat Counter",
+      "Fruit Counter",
+      "Catering services",
+      "Pan Counter",
+      "Cake",
+      "Bar Tenders",
     ],
   },
   {
-    name: 'Invites & Gifts',
-    subCategories: ['invitation card', 'invitation gift'],
+    name: "Invites & Gifts",
+    subCategories: ["invitation card", "invitation gift"],
   },
   {
-    name: 'Jwellery And Accessories',
+    name: "Jwellery And Accessories",
     subCategories: [
-      'FLOWER JEWELLERY ',
-      'BRIDAL JEWELLERYON RENT',
-      'Artificial',
-      'Accessories',
+      "FLOWER JEWELLERY ",
+      "BRIDAL JEWELLERYON RENT",
+      "Artificial",
+      "Accessories",
     ],
   },
   {
-    name: 'Music & Dance',
+    name: "Music & Dance",
     subCategories: [
-      'Anchor',
-      'Artist management services',
-      'Choreographer',
-      'Singer',
-      'DJ',
-      'Ghodi & Baggi',
-      'Band Baja',
-      'Dhol',
+      "Anchor",
+      "Artist management services",
+      "Choreographer",
+      "Singer",
+      "DJ",
+      "Ghodi & Baggi",
+      "Band Baja",
+      "Dhol",
     ],
   },
   {
-    name: 'Pandit Jee',
+    name: "Pandit Jee",
     subCategories: [],
   },
   {
-    name: 'Makeup',
-    subCategories: ['bridal makeup', 'Groom Makeup', 'Family Makeup'],
+    name: "Makeup",
+    subCategories: ["bridal makeup", "Groom Makeup", "Family Makeup"],
   },
   {
-    name: 'Mehndi',
-    subCategories: ['Bride Mehndi', 'Family Member Mehndi'],
+    name: "Mehndi",
+    subCategories: ["Bride Mehndi", "Family Member Mehndi"],
   },
   {
-    name: 'Photographers',
+    name: "Photographers",
     subCategories: [
-      'Cinema/Video',
-      'Album',
-      'Collage Maker',
-      'Drone',
-      'Pre Wedding Shoot',
+      "Cinema/Video",
+      "Album",
+      "Collage Maker",
+      "Drone",
+      "Pre Wedding Shoot",
     ],
   },
   {
-    name: 'Planning & Decor',
+    name: "Planning & Decor",
     subCategories: [
-      'Wedding Decor',
-      'Wedding Planners',
-      'Celebrities Management',
-      'Hospitality Service',
+      "Wedding Decor",
+      "Wedding Planners",
+      "Celebrities Management",
+      "Hospitality Service",
     ],
   },
-]
+];
 
 const CategotiesListVenue = [
   {
-    name: 'Hotel',
+    name: "Hotel",
     subCategories: [],
   },
   {
-    name: 'Resort',
+    name: "Resort",
     subCategories: [],
   },
   {
-    name: 'Farm House',
+    name: "Farm House",
     subCategories: [],
   },
   {
-    name: 'Banquet Hall',
+    name: "Banquet Hall",
     subCategories: [],
   },
   {
-    name: 'Lawn',
+    name: "Lawn",
     subCategories: [],
   },
   {
-    name: 'Destination Wedding',
+    name: "Destination Wedding",
     subCategories: [],
   },
-]
+];
 
 const EditListedItems = () => {
+  const router = useRouter();
 
-  const router = useRouter()
+  const [config, setConfig] = useState();
+  const [status, setStatus] = useState("Submit New Item");
 
-  const [config, setConfig] = useState()
-  const [status, setStatus] = useState('Submit New Item')
+  const [mainImage, setMainImage] = useState(null);
+  const [menu, setMenu] = useState(null);
+  const [galleryImages, setGalleryImages] = useState();
+  const [brochure, setBrochure] = useState(null);
+  const [albums, setAlbums] = useState([{ name: "", value: "" }]);
 
-  const [mainImage, setMainImage] = useState(null)
-  const [menu, setMenu] = useState(null)
-  const [galleryImages, setGalleryImages] = useState()
-  const [brochure, setBrochure] = useState(null)
-  const [albums, setAlbums] = useState([{ name: '', value: '' }])
+  const [vidLinks, setVidLinks] = useState([""]);
 
-  const [vidLinks, setVidLinks] = useState([''])
-
-  const [amenities, setAmenities] = useState([{ name: '', min: '', max: '' }])
-  const [plans, setPlans] = useState([{ name: '', value: '' }])
-  const [features, setFeatures] = useState([{ name: '', value: false }])
+  const [amenities, setAmenities] = useState([{ name: "", min: "", max: "" }]);
+  const [plans, setPlans] = useState([{ name: "", value: "" }]);
+  const [features, setFeatures] = useState([{ name: "", value: false }]);
   const [allowedVendors, setAllowedVendors] = useState([
-    { name: 'Decor', value: false },
-    { name: 'DJ', value: false },
-    { name: 'Cake', value: false },
-    { name: 'Liquor', value: false },
-    { name: 'Pan Counter', value: false },
-  ])
+    { name: "Decor", value: false },
+    { name: "DJ", value: false },
+    { name: "Cake", value: false },
+    { name: "Liquor", value: false },
+    { name: "Pan Counter", value: false },
+  ]);
 
   const [form, setForm] = useState({
-    name: '',
-    category: '',
-    type: '',
-    address: '',
+    name: "",
+    category: "",
+    type: "",
+    address: "",
     albums: [],
     Brochure: [],
-  })
+  });
+
+  let [imageUrl, setImageUrl] = useState();
+  let { FileInput, openFileDialog, uploadToS3 } = useS3Upload();
+
+  let handleFileChange = async (file) => {
+    console.log("file", file.name);
+    let { url } = await uploadToS3(file);
+    const a = url.replaceAll("%", "%25");
+    setImageUrl(a);
+    console.log("image", a);
+  };
 
   const mainImageHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
       const i = event.target.files[0];
-      setMainImage(i)
+      setMainImage(i);
     }
   };
 
   const menuHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
       const i = event.target.files[0];
-      setMenu(i)
+      setMenu(i);
     }
-  }
+  };
 
   const galleryHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
       const i = event.target.files;
-      setGalleryImages(i)
+      setGalleryImages(i);
     }
   };
 
-  const albumHandler = index => e => {
+  const albumHandler = (index) => (e) => {
     if (e.target.files && e.target.files[0]) {
       const i = e.target.files;
       let newArr = [...albums];
@@ -274,176 +286,166 @@ const EditListedItems = () => {
     }
   };
 
-  const onChangeAlbumHandler = index => e => {
+  const onChangeAlbumHandler = (index) => (e) => {
     let newArr = [...albums];
     newArr[index].name = e.target.value;
     setAlbums(newArr);
-  }
+  };
 
   const brochureHandler = (event) => {
     if (event.target.files && event.target.files[0]) {
       const i = event.target.files[0];
-      setBrochure(i)
+      setBrochure(i);
     }
   };
 
   const testImage = () => {
-
     console.log("mainImage", mainImage);
 
-    const mainform = new FormData()
-    mainform.append('image', mainImage)
-    mainform.append('_id', "6352df5eb7c44800163db99d")
+    const mainform = new FormData();
+    mainform.append("image", mainImage);
+    mainform.append("_id", "6352df5eb7c44800163db99d");
     console.log("mainform", mainform);
     axios
       .post(`${PROXY}/item/mainimage`, mainform, config)
-      .then(res => {
-        console.log("mainimage response", res.data)
+      .then((res) => {
+        console.log("mainimage response", res.data);
       })
-      .catch(err => console.log('E' + err))
-  }
+      .catch((err) => console.log("E" + err));
+  };
 
   const addHandler = async () => {
-
-    if (!form.name.length || !form.type.length || !form.category.length || !form.address.length)
-      return alert('Please fill name ,type , city, address')
-    if (mainImage === null) return alert('Please select main image')
-
-    setStatus("Wait....Uploading info")
-    const data = await axios.post(
-      `${PROXY}/item/create`,
-      form,
-      config,
+    if (
+      !form.name.length ||
+      !form.type.length ||
+      !form.category.length ||
+      !form.address.length
     )
+      return alert("Please fill name ,type , city, address");
+    if (mainImage === null) return alert("Please select main image");
 
-    const itemdata = data.data.data
-    setStatus("Don....Uploading info")
-    // uploadMainImage(itemdata)    
-    setStatus("Wait....Uploading mainimage")
-    const mainform = new FormData()
-    mainform.append('image', mainImage)
-    mainform.append('_id', itemdata._id)
+    setStatus("Wait....Uploading info");
+    const data = await axios.post(`${PROXY}/item/create`, form, config);
+
+    const itemdata = data.data.data;
+    setStatus("Don....Uploading info");
+    // uploadMainImage(itemdata)
+    setStatus("Wait....Uploading mainimage");
+    const mainform = new FormData();
+    mainform.append("image", mainImage);
+    mainform.append("_id", itemdata._id);
     console.log("mainform", mainform);
     try {
-
       // ----- mainimage
 
       axios
         .post(`${PROXY}/item/mainimage`, mainform, config)
-        .then(res => {
-          console.log("mainimage response", res.data)
-          setStatus("Done....Uploading mainimage")
+        .then((res) => {
+          console.log("mainimage response", res.data);
+          setStatus("Done....Uploading mainimage");
         })
-        .catch(err => console.log('E' + err))
+        .catch((err) => console.log("E" + err));
 
       //------ menu
-      const menudata = new FormData()
+      const menudata = new FormData();
       if (menu) {
-        setStatus("Wait....Uploading Menu")
-        menudata.append(`menu`, menu)
-        menudata.append('_id', itemdata._id)
+        setStatus("Wait....Uploading Menu");
+        menudata.append(`menu`, menu);
+        menudata.append("_id", itemdata._id);
         axios
           .post(`${PROXY}/item/uploadmenu`, menudata, config)
-          .then(res => {
-            console.log("menu response", res.data)
-            setStatus("Done....Uploading Menu")
+          .then((res) => {
+            console.log("menu response", res.data);
+            setStatus("Done....Uploading Menu");
           })
-          .catch(err => console.log('E' + err))
+          .catch((err) => console.log("E" + err));
       }
 
       //------- gallary
       console.log(galleryImages.length);
       if (galleryImages.length) {
-        setStatus("Wait....Uploading gallery")
-        const gallery = new FormData()
+        setStatus("Wait....Uploading gallery");
+        const gallery = new FormData();
         Object.keys(galleryImages).forEach(function (key) {
           console.log(galleryImages[key]);
-          gallery.append(`images`, galleryImages[key])
+          gallery.append(`images`, galleryImages[key]);
         });
 
-        gallery.append('_id', itemdata._id)
-        await axios.post(
-          `${PROXY}/item/imageupload`,
-          gallery,
-          config,
-        )
-        setStatus("done....Uploading gallery")
+        gallery.append("_id", itemdata._id);
+        await axios.post(`${PROXY}/item/imageupload`, gallery, config);
+        setStatus("done....Uploading gallery");
       }
     } catch (error) {
       console.log(error);
     }
 
     //------ brochure
-    const brocherdata = new FormData()
+    const brocherdata = new FormData();
     if (brochure) {
-      setStatus("Wait....Uploading brochure")
-      brocherdata.append(`brochure`, brochure)
-      brocherdata.append('_id', itemdata._id)
-      await axios.post(
-        `${PROXY}/item/uploadbrochure`,
-        brocherdata,
-        config,
-      )
-      setStatus("done....Uploading brochure")
+      setStatus("Wait....Uploading brochure");
+      brocherdata.append(`brochure`, brochure);
+      brocherdata.append("_id", itemdata._id);
+      await axios.post(`${PROXY}/item/uploadbrochure`, brocherdata, config);
+      setStatus("done....Uploading brochure");
     }
 
     //------albums
 
-    setStatus('Wait....Uploading albums')
+    setStatus("Wait....Uploading albums");
     for (let item of albums) {
-      if (item.name && item.value) await uploadAlbums(itemdata._id, item, config)
+      if (item.name && item.value)
+        await uploadAlbums(itemdata._id, item, config);
     }
-    setStatus('done....Uploading albums')
-    setStatus("All done")
-    router.push("/dashboard")
-  }
+    setStatus("done....Uploading albums");
+    setStatus("All done");
+    router.push("/dashboard");
+  };
 
   const uploadAlbums = async (id, item, config) => {
-    const data = new FormData()
-    data.append('_id', id)
-    data.append('name', item.name)
+    const data = new FormData();
+    data.append("_id", id);
+    data.append("name", item.name);
     console.log(item.name);
     Object.keys(item.value).forEach(function (key) {
       console.log(item.value[key]);
       // data.append('name', item.name)
-      data.append(`albums`, item.value[key])
+      data.append(`albums`, item.value[key]);
     });
-    await axios.post(
-      `${PROXY}/item/uploadalbum`,
-      data,
-      config,
-    )
-    return
-  }
+    await axios.post(`${PROXY}/item/uploadalbum`, data, config);
+    return;
+  };
 
   const test = async () => {
     for (let item of albums) {
-      if (item.name && item.value) await testupload(item)
+      if (item.name && item.value) await testupload(item);
     }
-  }
+  };
 
   const testupload = async (item) => {
-    const data = new FormData()
-    data.append('name', item.name)
+    const data = new FormData();
+    data.append("name", item.name);
     Object.keys(item.value).forEach(function (key) {
-      data.append(`albums`, item.value[key])
+      data.append(`albums`, item.value[key]);
     });
     console.log(data);
-  }
+  };
 
   useEffect(() => {
-
     if (localStorage.getItem("wedcell") !== null) {
       const config = {
-        headers: { authorization: JSON.parse(localStorage.getItem("wedcell")).data.token },
-      }
+        headers: {
+          authorization: JSON.parse(localStorage.getItem("wedcell")).data.token,
+        },
+      };
 
-      setConfig(config)
+      setConfig(config);
 
-      setForm({ ...form, vendorId: JSON.parse(localStorage.getItem("wedcell")).data._id })
+      setForm({
+        ...form,
+        vendorId: JSON.parse(localStorage.getItem("wedcell")).data._id,
+      });
     }
-
-  }, [])
+  }, []);
 
   // console.log(form);
   // console.log(plans);
@@ -453,49 +455,56 @@ const EditListedItems = () => {
   // console.log(vidLinks);
 
   return (
-    <div className='bg-white py-2'>
-
-      <h5 className='text-center'>Add Listing</h5>
+    <div className="bg-white py-2">
+      <h5 className="text-center">Add Listing</h5>
 
       {/* <button onClick={testImage}>Click</button> */}
       {/* <button onClick={test}>Click</button> */}
 
       <div className={Styles.form_container}>
-
         <div className="row">
-
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div className={Styles.category_section}>
               <label className={Styles.label}>Main Image</label>
               <br></br>
-              <label className={Styles.label}>
+              {/* <label className={Styles.label}>
                 <input type="file" accept="image/*" onChange={mainImageHandler} />
-              </label>
+              </label> */}
+              <div>
+                <FileInput onChange={handleFileChange} />
+
+                <button onClick={openFileDialog}>Upload file</button>
+
+                {imageUrl && <img src={imageUrl} />}
+              </div>
             </div>
           </div>
-
         </div>
 
         <div className="row">
-
           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
             <div className={Styles.category_section}>
               <label className={Styles.label}>Listing Type</label>
               <br></br>
-              <select onChange={(e) => {
-                setForm({ ...form, type: e.target.value })
-                setAmenities([{ name: '', min: '', max: '' }])
-                setPlans([{ name: '', value: '' }])
-                setFeatures([{ name: '', value: false }])
-                setAllowedVendors([
-                  { name: 'Decor', value: false },
-                  { name: 'DJ', value: false },
-                  { name: 'Cake', value: false },
-                  { name: 'Liquor', value: false },
-                  { name: 'Pan Counter', value: false },
-                ])
-              }} className={Styles.select_tag}>
-                <option value="" disabled selected>--select--</option>
+              <select
+                onChange={(e) => {
+                  setForm({ ...form, type: e.target.value });
+                  setAmenities([{ name: "", min: "", max: "" }]);
+                  setPlans([{ name: "", value: "" }]);
+                  setFeatures([{ name: "", value: false }]);
+                  setAllowedVendors([
+                    { name: "Decor", value: false },
+                    { name: "DJ", value: false },
+                    { name: "Cake", value: false },
+                    { name: "Liquor", value: false },
+                    { name: "Pan Counter", value: false },
+                  ]);
+                }}
+                className={Styles.select_tag}
+              >
+                <option value="" disabled selected>
+                  --select--
+                </option>
                 <option value="Venue">Venue</option>
                 <option value="Vendor">Vendor</option>
               </select>
@@ -506,10 +515,16 @@ const EditListedItems = () => {
             <div className={Styles.category_section}>
               <label className={Styles.label}>City</label>
               <br></br>
-              <select onChange={(e) => {
-                setForm({ ...form, city: e.target.value })
-              }} id='city' className={Styles.select_tag}>
-                <option value={null} disabled selected>--select--</option>
+              <select
+                onChange={(e) => {
+                  setForm({ ...form, city: e.target.value });
+                }}
+                id="city"
+                className={Styles.select_tag}
+              >
+                <option value={null} disabled selected>
+                  --select--
+                </option>
                 {cities.map((name) => (
                   <option value={name}>{name}</option>
                 ))}
@@ -522,7 +537,6 @@ const EditListedItems = () => {
             <br></br>
             <input type="number" value="15000" className={Styles.price_tag}></input>
           </div> */}
-
         </div>
 
         <div className="row">
@@ -530,25 +544,41 @@ const EditListedItems = () => {
             <div className={Styles.category_section}>
               <label className={Styles.label}>Category</label>
               <br></br>
-              {form.type === "Vendor" ?
-                <select onChange={(e) => {
-                  setForm({ ...form, category: e.target.value })
-                }} id='city' className={Styles.select_tag}>
-                  <option value={null} disabled selected>--select--</option>
+              {form.type === "Vendor" ? (
+                <select
+                  onChange={(e) => {
+                    setForm({ ...form, category: e.target.value });
+                  }}
+                  id="city"
+                  className={Styles.select_tag}
+                >
+                  <option value={null} disabled selected>
+                    --select--
+                  </option>
                   {CategotiesList.map((list, key) => (
-                    <option key={key} value={list.name}>{list.name}</option>
+                    <option key={key} value={list.name}>
+                      {list.name}
+                    </option>
                   ))}
                 </select>
-                :
-                <select onChange={(e) => {
-                  setForm({ ...form, category: e.target.value })
-                }} id='city' className={Styles.select_tag}>
-                  <option value={null} disabled selected>--select--</option>
+              ) : (
+                <select
+                  onChange={(e) => {
+                    setForm({ ...form, category: e.target.value });
+                  }}
+                  id="city"
+                  className={Styles.select_tag}
+                >
+                  <option value={null} disabled selected>
+                    --select--
+                  </option>
                   {CategotiesListVenue.map((list, key) => (
-                    <option key={key} value={list.name}>{list.name}</option>
+                    <option key={key} value={list.name}>
+                      {list.name}
+                    </option>
                   ))}
                 </select>
-              }
+              )}
             </div>
           </div>
 
@@ -556,200 +586,270 @@ const EditListedItems = () => {
             <div className={Styles.category_section}>
               <label className={Styles.label}>Sub Category</label>
               <br></br>
-              {form.type === "Vendor" ?
-                <select onChange={(e) => {
-                  setForm({ ...form, subCategory: e.target.value })
-                }} className={Styles.select_tag}>
-                  <option value={null} disabled selected>--select--</option>
-                  {CategotiesList.map((list) => (
-                    form.category === list.name ?
-                      list.subCategories.map((sub) => (
-                        <option value={sub}>{sub}</option>
-                      ))
+              {form.type === "Vendor" ? (
+                <select
+                  onChange={(e) => {
+                    setForm({ ...form, subCategory: e.target.value });
+                  }}
+                  className={Styles.select_tag}
+                >
+                  <option value={null} disabled selected>
+                    --select--
+                  </option>
+                  {CategotiesList.map((list) =>
+                    form.category === list.name
+                      ? list.subCategories.map((sub) => (
+                          <option value={sub}>{sub}</option>
+                        ))
                       : ""
-                  ))}
+                  )}
                 </select>
-                :
-                <select onChange={(e) => {
-                  setForm({ ...form, subCategory: e.target.value })
-                }} className={Styles.select_tag}>
-                  <option value={null} disabled selected>--select--</option>
-                  {CategotiesListVenue.map((list) => (
-                    form.category === list.name ?
-                      list.subCategories.map((sub) => (
-                        <option value={sub}>{sub}</option>
-                      ))
+              ) : (
+                <select
+                  onChange={(e) => {
+                    setForm({ ...form, subCategory: e.target.value });
+                  }}
+                  className={Styles.select_tag}
+                >
+                  <option value={null} disabled selected>
+                    --select--
+                  </option>
+                  {CategotiesListVenue.map((list) =>
+                    form.category === list.name
+                      ? list.subCategories.map((sub) => (
+                          <option value={sub}>{sub}</option>
+                        ))
                       : ""
-                  ))}
+                  )}
                 </select>
-              }
+              )}
             </div>
           </div>
         </div>
 
         <div className="row">
-
           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
             <div className={Styles.category_section}>
               <label className={Styles.label}>Name of Listing</label>
               <br></br>
-              <input onChange={(e) => {
-                setForm({ ...form, name: e.target.value })
-              }} type="text" placeholder='Name of Listing' className={Styles.phone_tag}></input>
+              <input
+                onChange={(e) => {
+                  setForm({ ...form, name: e.target.value });
+                }}
+                type="text"
+                placeholder="Name of Listing"
+                className={Styles.phone_tag}
+              ></input>
             </div>
           </div>
 
           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
             <label className={Styles.label}>Description / About</label>
             <br></br>
-            <input onChange={(e) => {
-              setForm({ ...form, description: e.target.value })
-            }} type="text" placeholder='Description / About' className={Styles.email_tag}></input>
+            <input
+              onChange={(e) => {
+                setForm({ ...form, description: e.target.value });
+              }}
+              type="text"
+              placeholder="Description / About"
+              className={Styles.email_tag}
+            ></input>
           </div>
-
         </div>
 
         <div className="row">
-
           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
             <div className={Styles.category_section}>
               <label className={Styles.label}>Contact Email</label>
               <br></br>
-              <input onChange={(e) => {
-                setForm({ ...form, contactEmail: e.target.value })
-              }} type="text" placeholder='Contact Email' className={Styles.phone_tag}></input>
+              <input
+                onChange={(e) => {
+                  setForm({ ...form, contactEmail: e.target.value });
+                }}
+                type="text"
+                placeholder="Contact Email"
+                className={Styles.phone_tag}
+              ></input>
             </div>
           </div>
 
           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
             <label className={Styles.label}>Contact Number</label>
             <br></br>
-            <input onChange={(e) => {
-              setForm({ ...form, contactPhone: e.target.value })
-            }} type="text" placeholder='Contact Number' className={Styles.email_tag}></input>
+            <input
+              onChange={(e) => {
+                setForm({ ...form, contactPhone: e.target.value });
+              }}
+              type="text"
+              placeholder="Contact Number"
+              className={Styles.email_tag}
+            ></input>
           </div>
-
         </div>
 
         <div className="row">
-
           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
             <div className={Styles.category_section}>
               <label className={Styles.label}>Address</label>
               <br></br>
-              <input onChange={(e) => {
-                setForm({ ...form, address: e.target.value })
-              }} type="text" placeholder='Address' className={Styles.phone_tag}></input>
+              <input
+                onChange={(e) => {
+                  setForm({ ...form, address: e.target.value });
+                }}
+                type="text"
+                placeholder="Address"
+                className={Styles.phone_tag}
+              ></input>
             </div>
           </div>
 
           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
             <label className={Styles.label}>Zipcode</label>
             <br></br>
-            <input onChange={(e) => {
-              setForm({ ...form, zipcode: e.target.value })
-            }} type="text" placeholder='Zipcode' className={Styles.email_tag}></input>
+            <input
+              onChange={(e) => {
+                setForm({ ...form, zipcode: e.target.value });
+              }}
+              type="text"
+              placeholder="Zipcode"
+              className={Styles.email_tag}
+            ></input>
           </div>
-
         </div>
 
         <div className="row">
-
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div className={Styles.category_section}>
               <label className={Styles.label}>Amenity Price</label>
               <br></br>
-              <input onChange={(e) => {
-                setForm({ ...form, price: e.target.value })
-              }} type="text" placeholder='Amenity Price' className={Styles.phone_tag}></input>
+              <input
+                onChange={(e) => {
+                  setForm({ ...form, price: e.target.value });
+                }}
+                type="text"
+                placeholder="Amenity Price"
+                className={Styles.phone_tag}
+              ></input>
             </div>
           </div>
-
         </div>
 
         {form.type === "Venue" && (
           <>
             <div className="row">
-
               <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                 <div className={Styles.category_section}>
-                  <label className={Styles.label}>Veg Platter Price (in ₹)</label>
+                  <label className={Styles.label}>
+                    Veg Platter Price (in ₹)
+                  </label>
                   <br></br>
-                  <input onChange={(e) => {
-                    setForm({ ...form, vegPerPlate: e.target.value })
-                  }} type="text" placeholder='Veg Platter Price (in ₹)' className={Styles.phone_tag}></input>
+                  <input
+                    onChange={(e) => {
+                      setForm({ ...form, vegPerPlate: e.target.value });
+                    }}
+                    type="text"
+                    placeholder="Veg Platter Price (in ₹)"
+                    className={Styles.phone_tag}
+                  ></input>
                 </div>
               </div>
 
               <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
-                <label className={Styles.label}>NonVeg Platter Price (in ₹)</label>
+                <label className={Styles.label}>
+                  NonVeg Platter Price (in ₹)
+                </label>
                 <br></br>
-                <input onChange={(e) => {
-                  setForm({ ...form, nonVegPerPlate: e.target.value })
-                }} type="text" placeholder='NonVeg Platter Price (in ₹)' className={Styles.email_tag}></input>
+                <input
+                  onChange={(e) => {
+                    setForm({ ...form, nonVegPerPlate: e.target.value });
+                  }}
+                  type="text"
+                  placeholder="NonVeg Platter Price (in ₹)"
+                  className={Styles.email_tag}
+                ></input>
               </div>
-
             </div>
 
             <div className="row">
-
               <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div className={Styles.name_block}>
                   <label className={Styles.label}>Menu</label>
                   <br></br>
                   <label className={Styles.label}>
-                    <input onChange={menuHandler} type="file" id="myfile" name="myfile" />
+                    <input
+                      onChange={menuHandler}
+                      type="file"
+                      id="myfile"
+                      name="myfile"
+                    />
                   </label>
                 </div>
               </div>
-
             </div>
 
             <div className="row mt-3 mb-3">
-              <label className={Styles.label}>Amenities / Halls
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <span onClick={() => {
-                  const newitem = { name: '', min: '', max: '' }
-                  setAmenities(old => [...old, newitem]);
-                }} className='fs-5 cursor-pointer'>
+              <label className={Styles.label}>
+                Amenities / Halls &nbsp;&nbsp;&nbsp;&nbsp;
+                <span
+                  onClick={() => {
+                    const newitem = { name: "", min: "", max: "" };
+                    setAmenities((old) => [...old, newitem]);
+                  }}
+                  className="fs-5 cursor-pointer"
+                >
                   +
-                </span></label>
+                </span>
+              </label>
 
               {amenities.map((data, key) => (
                 <>
                   <div className="col-md-4">
                     <label className={Styles.label}>Name</label>
                     <br></br>
-                    <input onChange={(e) => {
-                      const newarr = [...amenities]
-                      newarr[key].name = e.target.value
-                      setAmenities(newarr)
-                      setForm({ ...form, amenities: newarr })
-                    }} type="text" placeholder='Name' className={Styles.phone_tag}></input>
+                    <input
+                      onChange={(e) => {
+                        const newarr = [...amenities];
+                        newarr[key].name = e.target.value;
+                        setAmenities(newarr);
+                        setForm({ ...form, amenities: newarr });
+                      }}
+                      type="text"
+                      placeholder="Name"
+                      className={Styles.phone_tag}
+                    ></input>
                   </div>
                   <div className="col-md-4">
                     <label className={Styles.label}>Minimum Capacity</label>
                     <br></br>
-                    <input onChange={(e) => {
-                      const newarr = [...amenities]
-                      newarr[key].min = e.target.value
-                      setAmenities(newarr)
-                      setForm({ ...form, amenities: newarr })
-                    }} type="text" placeholder='Minimum Capacity' className={Styles.phone_tag}></input>
+                    <input
+                      onChange={(e) => {
+                        const newarr = [...amenities];
+                        newarr[key].min = e.target.value;
+                        setAmenities(newarr);
+                        setForm({ ...form, amenities: newarr });
+                      }}
+                      type="text"
+                      placeholder="Minimum Capacity"
+                      className={Styles.phone_tag}
+                    ></input>
                   </div>
                   <div className="col-md-4">
                     <label className={Styles.label}>Maximum Capacity</label>
                     <br></br>
-                    <input onChange={(e) => {
-                      const newarr = [...amenities]
-                      newarr[key].max = e.target.value
-                      setAmenities(newarr)
-                      setForm({ ...form, amenities: newarr })
-                    }} type="text" placeholder='Maximum Capacity' className={Styles.phone_tag}></input>
+                    <input
+                      onChange={(e) => {
+                        const newarr = [...amenities];
+                        newarr[key].max = e.target.value;
+                        setAmenities(newarr);
+                        setForm({ ...form, amenities: newarr });
+                      }}
+                      type="text"
+                      placeholder="Maximum Capacity"
+                      className={Styles.phone_tag}
+                    ></input>
                   </div>
                 </>
               ))}
-
             </div>
 
             <label className={Styles.label}>Vendor Allow Policy</label>
@@ -773,22 +873,29 @@ const EditListedItems = () => {
                 <div className="col-md-4">
                   {/* <label className={Styles.label}>Allowed / Not Allowed</label>
                   <br></br><br /> */}
-                  <input type="checkbox" onClick={() => {
-                    const newarr = [...allowedVendors]
-                    newarr[key].value = !data.value
-                    setAllowedVendors(newarr)
-                    setForm({ ...form, allowedVendors: newarr })
-                  }} checked={data.value} ></input>
+                  <input
+                    type="checkbox"
+                    onClick={() => {
+                      const newarr = [...allowedVendors];
+                      newarr[key].value = !data.value;
+                      setAllowedVendors(newarr);
+                      setForm({ ...form, allowedVendors: newarr });
+                    }}
+                    checked={data.value}
+                  ></input>
                 </div>
               </div>
             ))}
 
-            <label className={Styles.label}>Features
-              &nbsp;&nbsp;&nbsp;&nbsp;
-              <span onClick={() => {
-                const newitem = { name: '', value: '' }
-                setFeatures(old => [...old, newitem]);
-              }} className='fs-5 cursor-pointer'>
+            <label className={Styles.label}>
+              Features &nbsp;&nbsp;&nbsp;&nbsp;
+              <span
+                onClick={() => {
+                  const newitem = { name: "", value: "" };
+                  setFeatures((old) => [...old, newitem]);
+                }}
+                className="fs-5 cursor-pointer"
+              >
                 +
               </span>
             </label>
@@ -797,22 +904,32 @@ const EditListedItems = () => {
                 <div className="col-md-4">
                   <label className={Styles.label}>Name</label>
                   <br></br>
-                  <input onChange={(e) => {
-                    const newarr = [...features]
-                    newarr[key].name = e.target.value
-                    setFeatures(newarr)
-                    setForm({ ...form, features: newarr })
-                  }} type="text" placeholder='Name' className={Styles.phone_tag}></input>
+                  <input
+                    onChange={(e) => {
+                      const newarr = [...features];
+                      newarr[key].name = e.target.value;
+                      setFeatures(newarr);
+                      setForm({ ...form, features: newarr });
+                    }}
+                    type="text"
+                    placeholder="Name"
+                    className={Styles.phone_tag}
+                  ></input>
                 </div>
                 <div className="col-md-4">
                   <label className={Styles.label}>Allowed / Not Allowed</label>
-                  <br></br><br />
-                  <input type="checkbox" onClick={() => {
-                    const newarr = [...features]
-                    newarr[key].value = !data.value
-                    setFeatures(newarr)
-                    setForm({ ...form, features: newarr })
-                  }} checked={data.value} ></input>
+                  <br></br>
+                  <br />
+                  <input
+                    type="checkbox"
+                    onClick={() => {
+                      const newarr = [...features];
+                      newarr[key].value = !data.value;
+                      setFeatures(newarr);
+                      setForm({ ...form, features: newarr });
+                    }}
+                    checked={data.value}
+                  ></input>
                 </div>
               </div>
             ))}
@@ -820,54 +937,70 @@ const EditListedItems = () => {
         )}
 
         <div className="row mt-3 mb-3">
-          <label className={Styles.label}>Plans / Packages
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <span onClick={() => {
-              const newitem = { name: '', value: '' }
-              setPlans(old => [...old, newitem]);
-            }} className='fs-5 cursor-pointer'>
+          <label className={Styles.label}>
+            Plans / Packages &nbsp;&nbsp;&nbsp;&nbsp;
+            <span
+              onClick={() => {
+                const newitem = { name: "", value: "" };
+                setPlans((old) => [...old, newitem]);
+              }}
+              className="fs-5 cursor-pointer"
+            >
               +
-            </span></label>
+            </span>
+          </label>
 
           {plans.map((data, key) => (
             <div className="row mt-3 mb-3">
               <div className="col-md-4">
                 <label className={Styles.label}>Plan Name</label>
                 <br></br>
-                <input onChange={(e) => {
-                  const newarr = [...plans]
-                  newarr[key].name = e.target.value
-                  setPlans(newarr)
-                  setForm({ ...form, plans: newarr })
-                }} type="text" placeholder='Plan Name' className={Styles.phone_tag}></input>
+                <input
+                  onChange={(e) => {
+                    const newarr = [...plans];
+                    newarr[key].name = e.target.value;
+                    setPlans(newarr);
+                    setForm({ ...form, plans: newarr });
+                  }}
+                  type="text"
+                  placeholder="Plan Name"
+                  className={Styles.phone_tag}
+                ></input>
               </div>
               <div className="col-md-4">
                 <label className={Styles.label}>Value</label>
                 <br></br>
-                <input onChange={(e) => {
-                  const newarr = [...plans]
-                  newarr[key].value = e.target.value
-                  setPlans(newarr)
-                  setForm({ ...form, plans: newarr })
-                }} type="text" placeholder='Value' className={Styles.phone_tag}></input>
+                <input
+                  onChange={(e) => {
+                    const newarr = [...plans];
+                    newarr[key].value = e.target.value;
+                    setPlans(newarr);
+                    setForm({ ...form, plans: newarr });
+                  }}
+                  type="text"
+                  placeholder="Value"
+                  className={Styles.phone_tag}
+                ></input>
               </div>
             </div>
           ))}
-
         </div>
 
         <div className="row">
-
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div className={Styles.category_section}>
               <label className={Styles.label}>Terms and Conditions</label>
               <br></br>
-              <textarea onChange={(e) => {
-                setForm({ ...form, termsandconditions: e.target.value })
-              }} type="text" placeholder='Terms and Conditions' className={Styles.phone_tag}></textarea>
+              <textarea
+                onChange={(e) => {
+                  setForm({ ...form, termsandconditions: e.target.value });
+                }}
+                type="text"
+                placeholder="Terms and Conditions"
+                className={Styles.phone_tag}
+              ></textarea>
             </div>
           </div>
-
         </div>
 
         {/* <div className="row mt-3 mb-3">
@@ -889,13 +1022,19 @@ const EditListedItems = () => {
         </div> */}
 
         <div className="row">
-
           <div className="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
             <div className={Styles.name_block}>
               <label className={Styles.label}>Gallary</label>
               <br></br>
               <label className={Styles.label}>
-                <input onChange={galleryHandler} accept="image/*" type="file" id="myfile" name="myfile" multiple />
+                <input
+                  onChange={galleryHandler}
+                  accept="image/*"
+                  type="file"
+                  id="myfile"
+                  name="myfile"
+                  multiple
+                />
               </label>
             </div>
           </div>
@@ -909,60 +1048,76 @@ const EditListedItems = () => {
               </label>
             </div>
           </div>
-
         </div>
 
         <div className="row">
-
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div className={Styles.name_block}>
               <label className={Styles.label}>Albums</label>
               &nbsp;&nbsp;&nbsp;&nbsp;
-              <span onClick={() => {
-                const newitem = { name: '', value: '' }
-                setAlbums(old => [...old, newitem]);
-              }} className='fs-5 cursor-pointer'>
+              <span
+                onClick={() => {
+                  const newitem = { name: "", value: "" };
+                  setAlbums((old) => [...old, newitem]);
+                }}
+                className="fs-5 cursor-pointer"
+              >
                 +
               </span>
               <br></br>
-
               {albums.map((album, key) => (
                 <label key={key} className={Styles.label}>
-                  <input type="text" onChange={onChangeAlbumHandler(key)} placeholder='Album name' className={Styles.phone_tag}></input>
-                  <input onChange={albumHandler(key)} accept="image/*" type="file" id="myfile" name="myfile" multiple />
+                  <input
+                    type="text"
+                    onChange={onChangeAlbumHandler(key)}
+                    placeholder="Album name"
+                    className={Styles.phone_tag}
+                  ></input>
+                  <input
+                    onChange={albumHandler(key)}
+                    accept="image/*"
+                    type="file"
+                    id="myfile"
+                    name="myfile"
+                    multiple
+                  />
                 </label>
               ))}
-
             </div>
           </div>
-
         </div>
 
         <div className="row">
-
           <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             <div className={Styles.category_section}>
-              <label className={Styles.label}>Video Links
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <span onClick={() => {
-                  const newitem = ''
-                  setVidLinks(old => [...old, newitem]);
-                }} className='fs-5 cursor-pointer'>
+              <label className={Styles.label}>
+                Video Links &nbsp;&nbsp;&nbsp;&nbsp;
+                <span
+                  onClick={() => {
+                    const newitem = "";
+                    setVidLinks((old) => [...old, newitem]);
+                  }}
+                  className="fs-5 cursor-pointer"
+                >
                   +
                 </span>
               </label>
               <br></br>
               {vidLinks.map((data, key) => (
-                <input onChange={(e) => {
-                  const newitem = [...vidLinks]
-                  newitem[key] = e.target.value
-                  setVidLinks(newitem);
-                  setForm({ ...form, vidLinks: newitem })
-                }} type="text" placeholder='https://youtu.be/dOKQeqGNJwY' className={Styles.phone_tag}></input>
+                <input
+                  onChange={(e) => {
+                    const newitem = [...vidLinks];
+                    newitem[key] = e.target.value;
+                    setVidLinks(newitem);
+                    setForm({ ...form, vidLinks: newitem });
+                  }}
+                  type="text"
+                  placeholder="https://youtu.be/dOKQeqGNJwY"
+                  className={Styles.phone_tag}
+                ></input>
               ))}
             </div>
           </div>
-
         </div>
 
         {/* <div className="row">
@@ -1012,11 +1167,9 @@ const EditListedItems = () => {
             {status}
           </button>
         </div>
-
       </div>
-
     </div>
-  )
-}
+  );
+};
 
 export default EditListedItems

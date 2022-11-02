@@ -1,9 +1,92 @@
-.Cards {
-    /* cursor: pointer; */
-
-
+.card {
+  cursor: pointer;
 }
 
-.FilterContainer {
+.carousel {
+  position: relative;
+  width: 80%;
+  height: 50%;
+}
+/* 
+.Filter {
+    display: flex;
     height: 400px;
+} */
+
+.CardsContainer {
+  display: flex;
+}
+
+.Filter {
+  display: flex;
+  position: sticky;
+  width: 20%;
+  margin-top: ;
+  padding-top: 3%;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  justify-content: center;
+}
+
+@media screen and (max-width: 524px) {
+  .Filter {
+    display: grid;
+    width: 100%;
+    position: relative;
+    justify-content: left;
+    margin-left: 2%;
+  }
+}
+
+.green {
+  background-color: green;
+  border-radius: 20px;
+}
+
+.blue {
+  background-color: rgb(25, 25, 225);
+  border-radius: 20px;
+}
+
+.maroon {
+  background-color: maroon;
+  border-radius: 20px;
+}
+
+.lavender {
+  background-color: rgb(209, 194, 199);
+  border-radius: 20px;
+}
+
+.selector {
+  width: 100%;
+}
+
+@media screen and (max-width: 524px) {
+  .selector {
+    max-width: 60%;
+  }
+}
+
+.SelectorContainer {
+}
+
+@media screen and (max-width: 524px) {
+  .SelectorContainer {
+    justify-content: center;
+    margin-left: ;
+    display: flex;
+    gap: 2rem;
+  }
+}
+
+.FilterFake {
+  display: flex;
+  position: sticky;
+  width: 20%;
+  margin-top: ;
+  padding-top: 3%;
+
+  border-radius: 10px;
+  justify-content: center;
 }

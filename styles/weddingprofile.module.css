@@ -6,8 +6,9 @@
   width: 100%;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 524px) {
   .Card {
+   
   }
 }
 
@@ -20,16 +21,20 @@
   padding-left: 2%;
   border-radius: 9px;
   background-color: rgb(224, 224, 231);
+
 }
+
 
 @media screen and (max-width: 500px) {
   .CoupleD {
     display: grid;
     position: relative;
-    width: 50vh;
-    height: 59vh;
+    
+    width: 43vh;
+    height: 50vh;
     text-align: center;
     padding-top: 10%;
+    
   }
 }
 
@@ -53,64 +58,32 @@
 
 }
 
-.Location {
+.TextAreas {
+ 
   display: grid;
   flex-direction: row;
   position: absolute;
+  font-weight: 600;
+  font-size: 1.5rem;
   margin-top: 10%;
+
 }
 
-@media screen and (max-widthL:524px) {
-    .Location {
-      padding-bottom: 100%;
-      margin-left: 5%;
-      font-size: 400px;
+@media screen and (max-width:524px) {
+    .TextAreas {
+        /* padding-left: 30%; */
+        margin-top: -%;
+        visibility: visible;
+        padding-bottom: 110%;
+        margin-left: 50%;
+        
     }
   
 }
 
-.BrideName {
-  font-style: italic;
-  font-weight: 600;
-  margin-left: 25%;
-  
-}
 
-@media screen and (max-width: 524px) {
-  .BrideName {
-    display: flex;
-    position: absolute;
-    margin-left: 10%;
-    font-size: 1.5rem;
-  }
-}
 
-.GroomName {
-  font-style: italic;
-  font-weight: 600;
-  margin-left: 25%;
-  
 
-}
-
-@media screen and (max-width: 524px) {
-  .GroomName {
-    display: flex;
-    position: absolute;
-    margin-left: 5%;
-    font-style: italic;
-    font-weight: 600;
-  }
-}
-@media screen and (max-width: 524px) {
-  .anchortwo {
-    position: absolute;
-    font-weight: 600;
-    font-size: 1.5rem;
-    padding-bottom: 110%;
-    margin-left: 55%;
-  }
-}
 
 .location {
    display: flex;
@@ -141,7 +114,7 @@
 .Image {
   display: flex;
   height: 400px;
-  width: 86%;
+  width: 100%;
   margin-left: 15%;
   border-radius: 9px;
 }
@@ -151,9 +124,9 @@
     display: grid;
     position: relative;
     width: 100%;
-    height: 55vh;
+    height: 43.2vh;
     margin-left: -1%;
-    padding-top: 10%;
+    padding-top: 4%;
   }
 }
 

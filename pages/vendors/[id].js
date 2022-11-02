@@ -26,6 +26,7 @@ const VendorDetails = () => {
     const [show, setShow] = useState(false)
 
     const [config, setConfig] = useState()
+    const [vId, setVId] = useState('')
 
     const router = useRouter()
     const { id } = router.query
@@ -46,10 +47,12 @@ const VendorDetails = () => {
 
     const updateWishList = () => {
 
-        if (vendor.wishlist.includes(id)) {
-            vendor.wishlist.pop(id)
+        if (vendor.wishlist.includes(vId)) {
+            vendor.wishlist.pop(vId)
         } else {
-            vendor.wishlist.push(id)
+            if (vId !== '') {
+                vendor.wishlist.push(vId)
+            }
         }
 
         axios.post(
@@ -74,6 +77,7 @@ const VendorDetails = () => {
             const config = {
                 headers: { authorization: JSON.parse(localStorage.getItem("wedcell")).data.token },
             }
+            setVId(JSON.parse(localStorage.getItem("wedcell")).data._id);
             setConfig(config)
         }
 
@@ -96,7 +100,7 @@ const VendorDetails = () => {
                         <h1
                             onClick={updateWishList}
                             style={{
-                                color: (vendor.wishlist && vendor.wishlist.includes(id)) ? 'yellow' : 'white',
+                                color: (vendor.wishlist && vendor.wishlist.includes(vId)) ? 'yellow' : 'white',
                                 position: 'absolute',
                                 right: 30,
                                 top: 30,

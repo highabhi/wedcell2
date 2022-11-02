@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import Styles from "../styles/weddingprofile.module.css";
 import Link from "next/link";
+// import Image from "next/image";
 import VStyles from "../styles/Vendors.module.css";
 import Gallery from "../Components/Gallery";
 import Albums from "../Components/Albums";
 import Videos from "../Components/Videos";
-import { CiLocationOn } from "react-icons/fa";
 
 function WeddingProfile() {
   const property = {
-    imageURL:
-      "https://i.pinimg.com/originals/fa/f7/4d/faf74dba236b185c5cf255328141e204.jpg",
+    imageURL: "https://i.pinimg.com/originals/fa/f7/4d/faf74dba236b185c5cf255328141e204.jpg",
     bannerImage: "https://collectatics.com/images/background1.png",
+    title: "Couples name",
+    location: "Mumbai",
   };
 
   const data = {
@@ -28,17 +29,21 @@ function WeddingProfile() {
     <>
       <div className={Styles.Card}>
         <div className={Styles.CoupleD}>
+        <img className={Styles.Image} src={property.bannerImage} />
+         
           <div className={Styles.TextArea}>
-            <h5 className="card-title">{data.brideName}</h5>
+          <h5 className="card-title">{data.brideName}</h5>
             <h5 className="card-title">{data.groomName}</h5>
           </div>
-
-          <div className={Styles.Location}>
+          <div className={Styles.TextAreas}>
             <h5 className="card-title">{data.location}</h5>
             <h5 className="card-title">{data.date}</h5>
           </div>
+
+
+         
+         
           
-          <img className={Styles.Image} src={property.bannerImage} />
         </div>
       </div>
 
@@ -122,9 +127,9 @@ function WeddingProfile() {
       <div className={Styles.profilecontainer}>
         <div className="card">
           <div className="card-body ">
-            <div className="row g-6">
-              <Link href={"/ItemDetails"}>
-                <div className="col-lg-3 ">
+            <div className="row g-6 ">
+              <Link href={"/WeddingProfile"}>
+                <div className="col-lg-3  ">
                   <div className="card">
                     <img
                       className="card-img-top"

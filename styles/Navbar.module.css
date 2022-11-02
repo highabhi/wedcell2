@@ -115,6 +115,7 @@
     transition: all 450ms;
     opacity: 1;
     visibility: visible;
+    min-width: 220px !important;
 }
 
 .links_container .icon {
@@ -129,7 +130,14 @@
     transition: all 450ms;
 }
 
-
+.search_dropdown { 
+    border-radius: 6px;
+    background-color: white;
+    margin-top: 14px;
+    /* min-width: 25%;    
+    max-width: 100%; */
+    z-index: 10;
+}
 
 @media (max-width:768px) {
 

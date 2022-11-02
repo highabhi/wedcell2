@@ -11,6 +11,10 @@ import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
 import { Getallitems } from "../redux/actions/HomeActions";
 
+import appstore from '../public/images/Apple-Store.png'
+import google from '../public/images/Google-Play.png'
+import logo from '../public/logo.jpeg'
+
 import { useRouter } from "next/router";
 
 const Header = () => {
@@ -21,7 +25,207 @@ const Header = () => {
   const [auth, setAuth] = useState('')
   const [role, setRole] = useState('')
 
+  const [showCities, setShowCities] = useState(false)
+
   const router = useRouter()
+
+  const [locations, setLocations] = useState([
+    'All Location',
+    'Mumbai',
+    'Pune',
+    'Delhi',
+    'Jaipur',
+    'Goa',
+    'Udaipur',
+    'Agra',
+    'Noida',
+    'Gurgaon',
+    'Ranchi',
+    'Patna',
+    'Bangalore',
+    'Hyderabad',
+    'Ahmedabad',
+    'Chennai',
+    'Kolkata',
+    'Surat',
+    'Lucknow',
+    'Kanpur',
+    'Nagpur',
+    'Indore',
+    'Thane',
+    'Bhopal',
+    'Visakhapatnam',
+    'Vadodara',
+    'Ghaziabad',
+    'Ludhiana',
+    'Nashik',
+    'Meerut',
+    'Rajkot',
+    'Varanasi',
+    'Srinagar',
+    'Aurangabad',
+    'Dhanbad',
+    'Amritsar',
+    'Allahabad',
+    'Gwalior',
+    'Jabalpur',
+    'Coimbatore',
+    'Vijayawada',
+    'Jodhpur',
+    'Raipur',
+    'Kota',
+    'Chandigarh',
+    'Guwahati',
+    'Mysore',
+    'Bareilly',
+    'Aligarh',
+    'Moradabad',
+    'Jalandhar',
+    'Bhuba',
+    'Gorakhpur',
+    'Bikaner',
+    'Saharanpur',
+    'Jamshedpur',
+    'Bhilai',
+    'Cuttack',
+    'Firozabad',
+    'Kochi',
+    'Dehradun',
+    'Durgapur',
+    'Ajmer',
+    'Siliguri',
+    'Gaya',
+    'Tirupati',
+    'Mathura',
+    'Bilaspur',
+    'Haridwar',
+    'Gandhinagar',
+    'Shimla',
+    'Gangtok',
+    'Nainital',
+    'Jaisalmer',
+    'Indor',
+    'Rishikesh',
+    'kaushali',
+    'Pushkar',
+    'Kerala',
+    'Jim Corbet',
+    'Mussoorie',
+    'Dubai',
+    'Thailand',
+    'Canada',
+    'Srilanka',
+    'South Africa',
+    'Singapore',
+    'Bali',
+    'Italy',
+    'UK',
+    'Autralia',
+    'Bokaro',
+    'Faridabad',
+    'South Delhi',
+    'Kolkata',
+  ])
+
+  const [activeLocation, setActiveLocation] = useState(locations[0])
+
+  const CategotiesList = [
+    {
+      name: 'Food',
+      subCategories: [
+        'Chaat Counter',
+        'Fruit Counter',
+        'Catering services',
+        'Pan Counter',
+        'Cake',
+        'Bar Tenders',
+      ],
+    },
+    {
+      name: 'Invites & Gifts',
+      subCategories: ['invitation card', 'invitation gift'],
+    },
+    {
+      name: 'Jwellery And Accessories',
+      subCategories: [
+        'FLOWER JEWELLERY ',
+        'BRIDAL JEWELLERYON RENT',
+        'Artificial',
+        'Accessories',
+      ],
+    },
+    {
+      name: 'Music & Dance',
+      subCategories: [
+        'Anchor',
+        'Artist management services',
+        'Choreographer',
+        'Singer',
+        'DJ',
+        'Ghodi & Baggi',
+        'Band Baja',
+        'Dhol',
+      ],
+    },
+    {
+      name: 'Pandit Jee',
+      subCategories: [],
+    },
+    {
+      name: 'Makeup',
+      subCategories: ['bridal makeup', 'Groom Makeup', 'Family Makeup'],
+    },
+    {
+      name: 'Mehndi',
+      subCategories: ['Bride Mehndi', 'Family Member Mehndi'],
+    },
+    {
+      name: 'Photographers',
+      subCategories: [
+        'Cinema/Video',
+        'Album',
+        'Collage Maker',
+        'Drone',
+        'Pre Wedding Shoot',
+      ],
+    },
+    {
+      name: 'Planning & Decor',
+      subCategories: [
+        'Wedding Decor',
+        'Wedding Planners',
+        'Celebrities Management',
+        'Hospitality Service',
+      ],
+    },
+  ]
+
+  const CategotiesListVenue = [
+    {
+      name: 'Hotel',
+      subCategories: [],
+    },
+    {
+      name: 'Resort',
+      subCategories: [],
+    },
+    {
+      name: 'Farm House',
+      subCategories: [],
+    },
+    {
+      name: 'Banquet Hall',
+      subCategories: [],
+    },
+    {
+      name: 'Lawn',
+      subCategories: [],
+    },
+    {
+      name: 'Destination Wedding',
+      subCategories: [],
+    },
+  ]
 
   useEffect(() => {
     const scroll = window.addEventListener("scroll", () => {
@@ -66,14 +270,30 @@ const Header = () => {
                 India’s first wedding market place
               </span>
             </div>
-            <div className="col-md-4 col-12">
+            <div className="col-md-4 col-12" onClick={() => setShowCities(!showCities)}>
               <div
                 className={`${Styles.input_container} d-flex
                          justify-content-between align-items-center bg-white `}
               >
-                <span>All Cities</span>
+                <span>{activeLocation}</span>
                 <FaChevronDown />
               </div>
+
+              <div className={`${Styles.search_dropdown} bg-white p-4 position-absolute col-md-4 col-8`} style={{ transition: 'all 450ms', opacity: showCities ? '1 ' : '0', visibility: showCities ? 'visible' : 'hidden', cursor: 'pointer', height: "150px", overflowX: 'scroll' }} >
+
+
+                {locations.map((location, index) => {
+                  return (
+                    <span key={index} className={location === activeLocation ? 'text-black d-block pb-3 primary-text' : 'text-black d-block pb-3'} onClick={() => {
+                      setActiveLocation(location)
+                      setShowCities(!showCities)
+                    }}>{location}</span>
+                  )
+                })}
+
+
+              </div>
+
             </div>
             <div className="col-md-2 col-6">
               <div className="feedback-wrapper d-flex align-items-center text-white ">
@@ -85,21 +305,31 @@ const Header = () => {
             </div>
             <div className="col-md-2 col-6">
               <div className="dowload-links d-flex justify-content-end justify-content-md-start">
-                <Image
-                  src={
-                    "https://www.vhv.rs/dpng/d/114-1147665_transparent-google-play-icon-png-android-available-on.png"
-                  }
-                  width={80}
-                  height={24}
-                  objectFit="contain"
-                />
-                <Image
-                  src={
-                    "https://pngset.com/images/app-store-badge-available-on-the-app-store-text-alphabet-number-symbol-transparent-png-480148.png"
-                  }
-                  width={80}
-                  height={24}
-                />
+                <Link href={"https://play.google.com/store/apps/details?id=com.wb.wedcell"}>
+                  <Image
+                    src={
+                      google
+                    }
+                    style={{
+                      cursor: 'pointer'
+                    }}
+                    width={80}
+                    height={24}
+                    objectFit="contain"
+                  />
+                </Link>
+                <Link href={"https://apps.apple.com/in/app/wedcell/id1603782330"}>
+                  <Image
+                    src={
+                      appstore
+                    }
+                    style={{
+                      cursor: 'pointer'
+                    }}
+                    width={80}
+                    height={24}
+                  />
+                </Link>
               </div>
             </div>
           </div>
@@ -109,7 +339,7 @@ const Header = () => {
         <Link href={"/"} passHref>
           <div className="logo-container">
             <Image
-              src={"https://www.wedcell.com/assets/front/images/logo.png"}
+              src={logo}
               width={220}
               height={57}
               objectFit="contain"
@@ -125,7 +355,7 @@ const Header = () => {
             <span className={`d-block ms-2 ${Styles.chevron}`}>
               <FaChevronDown />
             </span>
-            <div className={Styles.dropdown}>
+            {/* <div className={Styles.dropdown}>
               <Link href="/venue">
                 <a className={Styles.dropdown_link}> Hotel</a>
               </Link>
@@ -144,6 +374,13 @@ const Header = () => {
               <Link href="/venue">
                 <a className={Styles.dropdown_link}> Lawn</a>
               </Link>
+            </div> */}
+            <div className={Styles.dropdown}>
+              {CategotiesListVenue.map((item, key) => (
+                <Link href="/venue" key={key}>
+                  <a className={Styles.dropdown_link}> {item.name}</a>
+                </Link>
+              ))}
             </div>
           </div>
           <div
@@ -153,8 +390,11 @@ const Header = () => {
             <span className={`d-block ms-2 ${Styles.chevron}`}>
               <FaChevronDown />
             </span>
-            <div className={`${Styles.dropdown} ${Styles.drop_center}`}>
-              <div className="drop-downlinks-container d-flex">
+            <div className={`${Styles.dropdown} ${Styles.drop_center}`} style={{
+              height: "250px",
+              overflowY: 'scroll'
+            }}>
+              {/* <div className="drop-downlinks-container d-flex">
                 <div className={Styles.d_links_wrapper}>
                   <span className="shadowed-text d-block text-black">
                     Photgraphers
@@ -270,7 +510,12 @@ const Header = () => {
                     </a>
                   </div>
                 </div>
-              </div>
+              </div> */}
+              {CategotiesList.map((item, key) => (
+                <Link href="/vendors" key={key}>
+                  <a className={Styles.dropdown_link}> {item.name}</a>
+                </Link>
+              ))}
             </div>
           </div>
           <div
@@ -281,7 +526,7 @@ const Header = () => {
               <FaChevronDown />
             </span>
             <div className={Styles.dropdown}>
-              <div className="drop-downlinks-container d-flex">
+              {/* <div className="drop-downlinks-container d-flex">
                 <div className={Styles.d_links_wrapper}>
                   <span className="shadowed-text d-block text-black">
                     Photgraphers
@@ -328,7 +573,13 @@ const Header = () => {
                     </a>
                   </div>
                 </div>
-              </div>
+              </div> */}
+              <Link href="/Shop">
+                <a className={Styles.dropdown_link}> Bridal Wear</a>
+              </Link>
+              <Link href="/Shop">
+                <a className={Styles.dropdown_link}> Groom Wear</a>
+              </Link>
             </div>
           </div>
           <div className={`${Styles.nav_link} `}>
@@ -363,9 +614,9 @@ const Header = () => {
                 <FaChevronDown />
               </span>
               <div className={Styles.dropdown}>
-                <Link href="/vendor-login">
+                {/* <Link href="/vendor-login">
                   <a className={Styles.dropdown_link}> Vendor Login </a>
-                </Link>
+                </Link> */}
                 <Link href="/customer-login">
                   <a className={Styles.dropdown_link}> Customer Login </a>
                 </Link>

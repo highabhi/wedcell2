@@ -8,6 +8,24 @@
   justify-content: center; */
 }
 
+.decard {
+  padding-left: 2%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  
+}
+
+@media screen and (max-width:524px) {
+  .decard {
+    display: flex;
+    position: relative;
+   
+  }
+  
+}
+
+
 @media screen  and (max-width:524px) {
    .DetailsContainer {
     display: grid;
@@ -111,8 +129,17 @@
 }
 
 .input {
+  display: flex;
   width: 50%;
-  margin-top: 40%;
+  margin-top: 10%;
+}
+
+@media screen and (max-width:524px) {
+  .input {
+    display: flex;
+    width: 80%;
+  }
+  
 }
 
 .title {
@@ -124,6 +151,26 @@
   font-weight: 800;
 
    
+}
+
+.green {
+  background-color: green;
+  border-radius: 20px;
+}
+
+.blue {
+  background-color: rgb(25, 25, 225);
+  border-radius: 20px;
+}
+
+.maroon {
+  background-color: maroon;
+  border-radius: 20px;
+}
+
+.lavender {
+  background-color: rgb(209, 194, 199);
+  border-radius: 20px;
 }
 
 
